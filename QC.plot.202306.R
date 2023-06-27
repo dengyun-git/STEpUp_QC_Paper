@@ -157,7 +157,6 @@ for (indexCounter in 1:nrow(SubLocationDat)){
   SubLocationDat$Broad.location[indexCounter]= newLocation
 }
 
-
 BroadLocationList <- diffProCombineOnline(SubLocationDat,"Broad.location")
 SubLocationBroad = BroadLocationList[[1]]
 SubLocationBroadType = BroadLocationList[[2]]
@@ -338,10 +337,10 @@ sapply(Test1[-6],function(x) {cor.test(as.numeric(sandwich_master_Historic[,x]),
 ###_______________________________________________________________________________________________________________________________________________________
 ###_______________________________________________________________________________________________________________________________________________________
 ### plot Figure6 and FigureS6 in QC paper
-plotTechPC(CombinedFrame,pcDat.batchDone)
-plotTechPC(CombinedFrame,pcDat.batchDone2)
-plotTechPC(CombinedFrame,pcDat.batchCorrected.Filtered)
-plotTechPC(CombinedFrame,pcDat.IPSreg.Filtered)
+plotTechPC(CombinedFrame,pcDat.batchDone)  ### batch corrected, non-IPS adjusted, non-filtered
+plotTechPC(CombinedFrame,pcDat.batchDone2) ### batch corrected, IPS adjusted, non-filtered
+plotTechPC(CombinedFrame,pcDat.batchCorrected.Filtered) ### batch corrected, non-IPS adjusted, filtered
+plotTechPC(CombinedFrame,pcDat.IPSreg.Filtered) ### batch corrected, IPS adjusted, filtered
 
 ###_______________________________________________________________________________________________________________________________________________________
 ###_______________________________________________________________________________________________________________________________________________________
