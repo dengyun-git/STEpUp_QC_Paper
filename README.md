@@ -1,7 +1,10 @@
 ---
 <img src="STEPUPlogo.png" width="30%" />
 
-Breif direcotry structure of the codes and input/output data shows as follows
+### About STEpUp_QC_Paper repository
+R scripts in this repository constructed processing and quality control pipeline for proteomic data of Synovial Fluid measured on SOMAscan platform. Outputs from the codes in this repository contributed to the paper "Methodological development of molecular endotype discovery from synovial fluid of individuals with knee osteoarthritis: the STEpUP OA Consortium".
+
+### Breif direcotry structure of the codes and input/output data shows as follows
 
 
 ```
@@ -17,7 +20,6 @@ Breif direcotry structure of the codes and input/output data shows as follows
 ## 9   ¦--QCassess.Paper.202306.R     
 ## 10  °--QC.plot.202306.R
 ```
-Brief introduction of each R script and input/output folder.
 
 ### About input/output folder
 * online resource: subcellular locations of proteins: https://www.proteinatlas.org/humanproteome/subcellular
