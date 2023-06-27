@@ -32,5 +32,5 @@ R scripts in this repository constructed processing and quality control pipeline
 * QC.paper.202306.R: major code to transform data and perform series of data quality assessments.
 * QCnorm.Paper.202306.R: functions of standardization steps, called by QC.paper.202306.R 
 * QCassess.Paper.202306.R: functions to perform quality evaluation, and use plots and tables for visualisation, called by QC.paper.202306.R.
-* QC.plot.202306.R: summurised code to make plots and tables for QC paper. Need to run QC.paper.202306.R first.
+* QC.plot.202306.R: summarised code to make plots and tables for QC paper. Need to run QC.paper.202306.R first.
 
