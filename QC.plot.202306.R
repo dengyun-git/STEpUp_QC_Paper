@@ -24,14 +24,20 @@ Robj.Path <- "/Users/ydeng/Documents/QCpaper.Code/Robj.Paper/"
 source(paste0(myCodeIn,"QCassess.Paper.202306.R"))
 load(file=paste0(Robj.Path,"All.RUFs.Rdat"))
 load(file=paste0(Robj.Path,"pcDat.Rdat"))
+load(file=paste0(Robj.Path,"Figure1.Rdat")) 
+load(file=paste0(Robj.Path,"Figure2.Rdat")) 
+load(file=paste0(Robj.Path,"Figure3.Rdat")) 
+load(file=paste0(Robj.Path,"Figure4.Rdat")) 
+load(file=paste0(Robj.Path,"UmapDis.filtered.Rdat"))
+load(file=paste0(Robj.Path,"CV.OA.Repeats.FreezeThaw.Reprocess.Rdat")) 
+load(file=paste0(Robj.Path,"Filters.Rdat"))
+load(file=paste0(Robj.Path,"TechVS10pc.Rdat"))
 
 ###_______________________________________________________________________________________________________________________________________________________
 ###_______________________________________________________________________________________________________________________________________________________
 ### Assessment of mean % CV and  mean R2 of each protein, correlation coefficient with immunoassay, comparing  across different standardisations 
 ###_______________________________________________________________________________________________________________________________________________________
 ###_______________________________________________________________________________________________________________________________________________________
-load(file=paste0(Robj.Path,"Figure1.Rdat")) 
-
 StandardisationLabel = c("Raw Data","HN","HN + PS","HN + PS + MN","HN + PS + MN + PC","HN + PS + PC") ### use the abbreviations for each normasliation step 
 
 p.meanCV <- ggplot(data = meanCV) + geom_point(aes(x=NormalisationSteps,y=100*as.numeric(meanCV),group=DiseaseGroup,col=DiseaseGroup)) + geom_line(aes(x=NormalisationSteps,y=100*as.numeric(meanCV),group=DiseaseGroup,col=DiseaseGroup)) + theme_bw() +
@@ -69,23 +75,18 @@ cowplot::plot_grid(p1, p2,nrow=2,ncol=1,align = "v")
 ### Investigate the PC1 drivers -- Intracellular Protein Score
 ###_______________________________________________________________________________________________________________________________________________________
 ###_______________________________________________________________________________________________________________________________________________________
-load(file=paste0(Robj.Path,"Figure2.Rdat")) 
-
 ##########################################################################################################################################################
 ### Variation explained by top 10 PCs after standardisation and IPS adjustment
 ##########################################################################################################################################################
-eig.val.standardised <- get_eigenvalue(pcs_standardised) 
-eig.val.batchDone2 <- get_eigenvalue(pcs_batchDone2) 
-
-p.variation.PC.before <- ggplot() + geom_bar(aes(x=1:10,y=eig.val.standardised$variance.percent[1:10]),stat="identity",fill="steelblue") + scale_x_discrete(limits=paste0("PC",1:10)) +
+p.variation.PC.before <- ggplot() + geom_bar(aes(x=1:10,y=eig.val.standardised.all[1:10]),stat="identity",fill="steelblue") + scale_x_discrete(limits=paste0("PC",1:10)) +
   xlab("") + ylab("Variation Explained (%)") + 
-  geom_text(aes(x=1:10,y=eig.val.standardised$variance.percent[1:10]+0.9,label=paste0(signif(eig.val.standardised$variance.percent[1:10],2),"%")),size=3,fontface = "bold") + theme_bw() + 
+  geom_text(aes(x=1:10,y=eig.val.standardised.all[1:10]+0.9,label=paste0(signif(eig.val.standardised.all[1:10],2),"%")),size=3,fontface = "bold") + theme_bw() + 
   theme(axis.text.x = element_text(size=7,face="bold"),axis.text.y =element_text(size=10,face="bold"),axis.title.y =element_text(size=12.5,face="bold",vjust=-1),
         panel.grid.major.x = element_blank()) 
 
-p.variation.PC.after  <- ggplot() + geom_bar(aes(x=1:10,y=eig.val.batchDone2$variance.percent[1:10]),stat="identity",fill="steelblue") + scale_x_discrete(limits=paste0("PC",1:10)) +
+p.variation.PC.after  <- ggplot() + geom_bar(aes(x=1:10,y=eig.val.batchDone2[1:10]),stat="identity",fill="steelblue") + scale_x_discrete(limits=paste0("PC",1:10)) +
   xlab("") + ylab("Variation Explained (%)\nafter IPS Adjustment") + theme_bw() + 
-  geom_text(aes(x=1:10,y=eig.val.batchDone2$variance.percent[1:10]+0.2,label=paste0(signif(eig.val.batchDone2$variance.percent[1:10],2),"%")),size=3,fontface = "bold") + theme_bw() + 
+  geom_text(aes(x=1:10,y=eig.val.batchDone2[1:10]+0.25,label=paste0(signif(eig.val.batchDone2[1:10],2),"%")),size=3,fontface = "bold") + theme_bw() + 
   theme(axis.text.x = element_text(size=7,face="bold"),axis.text.y =element_text(size=10,face="bold"),axis.title.y =element_text(size=12.5,face="bold",vjust=-1),
         panel.grid.major.x = element_blank()) 
 
@@ -183,13 +184,10 @@ for(tsCount in 1:length(TissueList)){
   Tissue.Cell.GeneSets1[[tsCount]] <- Tissue.GeneSets
   names(Tissue.Cell.GeneSets1)[tsCount] <- Tissue
 }
-dupRowIdA <- grep("\\|",ProMeta$EntrezGeneID)
-proComplexRef = ProMeta[dupRowIdA,c("SomaId","EntrezGeneID","EntrezGeneSymbol","UniProt")]
-Tissue.Cell.GeneSets1.F <- sapply(Tissue.Cell.GeneSets1,function(x){replaceGenes(x,proComplexRef,"EntrezGeneSymbol")})
 
-MonoCyte <- sapply(keepseq,function(x) {ifelse(any(ProMeta[x,"EntrezGeneSymbol"] %in% Tissue.Cell.GeneSets1.F$`Immune system`$Monocytes),1,0)})
-Neutrophil <- sapply(keepseq,function(x) {ifelse(any(ProMeta[x,"EntrezGeneSymbol"] %in% Tissue.Cell.GeneSets1.F$`Immune system`$Neutrophils),1,0)})
-Macrophage <- sapply(keepseq,function(x) {ifelse(any(ProMeta[x,"EntrezGeneSymbol"] %in% Tissue.Cell.GeneSets1.F$`Immune system`$Macrophages),1,0)})
+MonoCyte <- sapply(keepseq,function(x) {ifelse(any(ProMeta[x,"EntrezGeneSymbol"] %in% Tissue.Cell.GeneSets1$`Immune system`$Monocytes),1,0)})
+Neutrophil <- sapply(keepseq,function(x) {ifelse(any(ProMeta[x,"EntrezGeneSymbol"] %in% Tissue.Cell.GeneSets1$`Immune system`$Neutrophils),1,0)})
+Macrophage <- sapply(keepseq,function(x) {ifelse(any(ProMeta[x,"EntrezGeneSymbol"] %in% Tissue.Cell.GeneSets1$`Immune system`$Macrophages),1,0)})
 
 # regression model with broad subcellular location as predictors, correlation coefficient between protein and PC1 as response variable, both on batch corrected/non-IPS adjusted and batch corrected/IPS-adjusted data
 summary(lm(corPerPro.BatchCorrected[[1]][keepseq] ~ log(corPerPro.BatchCorrected[[2]][keepseq])))
@@ -213,8 +211,6 @@ summary(lm(corPerPro.reg[[1]][keepseq] ~ as.factor(Macrophage) + log(corPerPro.r
 ### Investigate the PC2 drivers -- bimodal signal 
 ###_______________________________________________________________________________________________________________________________________________________
 ###_______________________________________________________________________________________________________________________________________________________
-load(file=paste0(Robj.Path,"Figure3.Rdat")) 
-
 ##########################################################################################################################################################
 ### Histogram along PC2
 ##########################################################################################################################################################
@@ -304,8 +300,6 @@ cowplot::plot_grid(p3,p4,nrow=2,ncol=1,align = "v")
 ### Correlation coefficient between SOMAscan and immunoassay, comparison across raw, standardized, non-IPS adjusted and IPS adjusted data
 ###_______________________________________________________________________________________________________________________________________________________
 ###_______________________________________________________________________________________________________________________________________________________
-load(file=paste0(Robj.Path,"Figure4.Rdat")) 
-
 NormalisationLabel = c("Raw Data","Optimized Standardisation","Processed without IPS Adjustment","Processed with IPS Adjustment")
 
 p.immunoassay.OA.IPS <- ggplot(data = CorDatP.OA.IPS) + geom_line(aes(x=as.character(CorC),y=as.numeric(CorDatY),group=CorDatX,col=CorDatX)) + ylim(-0.5,1) + scale_colour_manual(values = c("blue","seagreen","green","blueviolet","red","deepskyblue","hotpink","darkgoldenrod4","orange")) +
@@ -348,7 +342,6 @@ plotTechPC(CombinedFrame,pcDat.IPSreg.Filtered) ### batch corrected, IPS adjuste
 ### UMAP visualisation on filtered data for non-IPS adjusted and IPS adjusted data
 ###_______________________________________________________________________________________________________________________________________________________
 ###_______________________________________________________________________________________________________________________________________________________
-load(file=paste0(Robj.Path,"UmapDis.filtered.Rdat"))
 DiseaseSize1=ifelse(myUmap.BC.final.F$DiseaseGroup==4,"Big",ifelse(myUmap.BC.final.F$DiseaseGroup==3,"Mid","Small"))
 p.umap.BC.Dis <- ggplot(data=myUmap.BC.final.F) + geom_point(aes(x=D1,y=D2,color=as.character(DiseaseGroup),size=DiseaseSize1)) +
   xlab("D1") + ylab("D2") + scale_colour_manual(name="IPS Adjusted", values = c("#D55E00","#009E73","black","purple"),labels=c('OA', 'Injury', 'Healthy control',"Inflammatory control")) + 
@@ -373,7 +366,6 @@ cowplot::plot_grid(p.umap.BC.Dis, p.umap.IPS.Dis,labels = c("A", "B"),nrow=1,nco
 ### %CV distribution based on pooled sample replicates
 ###_______________________________________________________________________________________________________________________________________________________
 ###_______________________________________________________________________________________________________________________________________________________
-load(file=paste0(Robj.Path,"CV.OA.Repeats.FreezeThaw.Reprocess.Rdat")) ### load three matrices for plot -- temp1.OA, temp3.OA, temp5.OA
 temp1.OA <- OA.CV[[1]]
 temp3.OA <- OA.CV[[2]]
 temp5.OA <- OA.CV[[3]]
@@ -658,7 +650,6 @@ p.PCA.BimodalAfter
 ###_______________________________________________________________________________________________________________________________________________________
 ###_______________________________________________________________________________________________________________________________________________________
 ### Summary of filters for samples and proteins, as shown in TableS4 in QC paper
-load(file=paste0(Robj.Path,"Filters.Rdat"))
 getRemoveTable(NonHuman,RemoveS1,RemoveS2,RemoveS3,RemoveS4,RemovePro1,RemovePro2,bimodalP1,ConfounderTable1.batchDone[,c(7,10)],exprDat.batchDone)[[1]]
 getRemoveTable(NonHuman,RemoveS1,RemoveS2,RemoveS3,RemoveS4,RemovePro1,RemovePro2,bimodalP2,ConfounderTable1.batchDone2[,c(7,10)],exprDat.batchDone2)[[1]]
 
@@ -667,26 +658,29 @@ getRemoveTable(NonHuman,RemoveS1,RemoveS2,RemoveS3,RemoveS4,RemovePro1,RemovePro
 ### Summary of associations between technical confounders and top 10 PCs
 ###_______________________________________________________________________________________________________________________________________________________
 ###_______________________________________________________________________________________________________________________________________________________
-load(file=paste0(Robj.Path,"TechVS10pc.Rdat"))
-
 ### for standardised data
 View(signif(ConfounderTable2.Standerdised[1:10,],3))
 ConfounderTable2.Standerdised.padj <- sapply(1:ncol(ConfounderTable2.Standerdised),function(x){p.adjust(ConfounderTable2.Standerdised[,x],method="BH")})
+signif(eig.val.standardised.all[1:10],2) ### variation expained per top 10 PC
 
 ### for batch corrected, non-IPS adjusted, non-filtered data
 View(signif(ConfounderTable2.batchCorrected[1:10,],3))
 ConfounderTable2.batchCorrected.padj <- sapply(1:ncol(ConfounderTable2.batchCorrected),function(x){p.adjust(ConfounderTable2.batchCorrected[,x],method="BH")})
+signif(eig.val.batchDone[1:10],2) ### variation expained per top 10 PC
 
 ### for batch corrected, IPS adjusted, non-filtered data
 View(signif(ConfounderTable2.IPSreg[1:10,],3))
 ConfounderTable2.IPSreg.padj <- sapply(1:ncol(ConfounderTable2.IPSreg),function(x){p.adjust(ConfounderTable2.IPSreg[,x],method="BH")})
+signif(eig.val.batchDone2[1:10],2) ### variation expained per top 10 PC
 
 ### for batch corrected, non-IPS adjusted, filtered data
 View(signif(ConfounderTable2.batchCorrected.Filtered[1:10,],3)) 
 ConfounderTable2.batchCorrected.Filtered.padj <- sapply(1:ncol(ConfounderTable2.batchCorrected.Filtered),function(x){p.adjust(ConfounderTable2.batchCorrected.Filtered[,x],method="BH")})
+signif(eig.val.batchCorrected.Filtered[1:10],2) ### variation expained per top 10 PC
 
 ### for batch corrected, IPS adjusted, filtered data
 View(signif(ConfounderTable2.IPSreg.Filtered[1:10,],3))
 ConfounderTable2.IPSreg.Filtered.padj <- sapply(1:ncol(ConfounderTable2.IPSreg.Filtered),function(x){p.adjust(ConfounderTable2.IPSreg.Filtered[,x],method="BH")})
+signif(eig.val.IPSreg.Filtered[1:10],2) ### variation expained per top 10 PC
 
 ### TableS7 in QC paper summaries the above five data frames

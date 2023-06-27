@@ -151,14 +151,15 @@ getFrarmeList <- function(pathIn,MySoma,ProMeta){
 #__________________________________________________________________________________________________________
 ### function to obtain top PCs which explain the "thresh" percentage variations
 ### Input: exprDat -- RFU; thresh -- threshold to define top PCs
-### Output: pcDat -- matrix of the top PCs.
+### Output: pcDat -- matrix of the top PCs; varianceExp -- variation explained per PC
 getTopPCdt <- function(exprDat,thresh){
   pc_norm <- prcomp(log10(as.matrix(exprDat)),scale = TRUE)
   eig.val <- get_eigenvalue(pc_norm) 
   topPC <- which(eig.val$cumulative.variance.percent>thresh)[1]
   pcDat <- pc_norm$x[,1:topPC]
   colnames(pcDat) <- paste0("PC",1:topPC)
-  return(pcDat)
+  varianceExp <- eig.val$variance.percent
+  return(list(pcDat,varianceExp))
 }
 
 #__________________________________________________________________________________________________________
@@ -359,33 +360,6 @@ diffProCombineOnline <- function(enrichSource,enrichMessage){
   } 
   
   return(list(enrichSourceDat,enrichSourceType,GeneSets))
-}
-
-#__________________________________________________________________________________________________________
-# function to tackle with protein complexies
-# input: all_gene_setsPre -- gene sets before replacing protein complexies; proComplexRef -- table showing protein complexies and corresponding protein meta data; whichCriteria -- indicate use EntrezID or Symbol for replacement in the gene sets.
-# output: all_gene_sets -- gene sets after replacing protein complexies with consistent somaID.
-replaceGenes <- function(all_gene_setsPre,proComplexRef,whichCriteria){
-  ### replace genes which encode complex proteins in the pathways gene sets with the unique SomaId
-  all_gene_sets = all_gene_setsPre
-  setK = 1
-  
-  ### pre-genesets may include entrez names or entrez ids... define which entrez item type is in the pre genesets.
-  criteriaColumn = which(colnames(proComplexRef)==whichCriteria)
-  
-  ### replace protein complexies with the consensus symbol.
-  for (geneSet in all_gene_setsPre){
-    for(complexPro in 1:nrow(proComplexRef)){
-      toReplace = strsplit(proComplexRef[,criteriaColumn][complexPro],"\\|")[[1]]
-      replaceGene <- unlist(sapply(toReplace,function(x){which(geneSet==x)})) ### define the positions of the protein complixies in the current geneSet
-      if(length(replaceGene)!=0){
-        geneSet[replaceGene] = rep(proComplexRef$SomaId[complexPro],length(replaceGene)) ### if current gene set include protein complexies, replace all of them with the unique label (here our case is somaID)
-        all_gene_sets[[setK]] = unique(geneSet) ### only keep the unique entries within the gene set
-      }else{next}
-    }
-    setK = setK +1}
-  
-  return(all_gene_sets)
 }
 
 #__________________________________________________________________________________________________________

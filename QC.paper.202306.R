@@ -135,7 +135,7 @@ exprDat_norm <- FrarmeList1[[3]]
 exprDat_norm.HM <- FrarmeList1[[4]]
 
 ### Dimensionality reduction by PCA, 80% variations are kept by top PCs based on standardized RFU
-pcDat <- pcDat.standardised <- getTopPCdt(exprDat_norm.HM,80)
+pcDat <- pcDat.standardised <- getTopPCdt(exprDat_norm.HM,80)[[1]]
 
 ### Investigate associations between predefined technical confounders and top PCs 
 ConfouderCheck2 <- ConfouderCheck(CombinedFrame,pcDat.standardised)
@@ -180,8 +180,12 @@ exprDat.RegDone <- exp(t(limma::removeBatchEffect(t(log(exprDat_norm)), covariat
 exprDat.batchDone2 <- exp(t(sva::ComBat(t(log(exprDat.RegDone)), PlateBimodal, mod=NULL, par.prior = TRUE, prior.plots = FALSE)))
 
 ### Dimensionality reduction by PCA, 80% variations are kept by top PCs based on batch corrected/non-IPS adjusted data, and batch corrected and IPS adjusted data 
-pcDat.batchDone <- getTopPCdt(exprDat.batchDone,80)
-pcDat.batchDone2 <- getTopPCdt(exprDat.batchDone2,80)
+tempList <- getTopPCdt(exprDat.batchDone,80)
+pcDat.batchDone <- tempList[[1]]
+eig.val.batchDone <- tempList[[2]]
+tempList <- getTopPCdt(exprDat.batchDone2,80)
+pcDat.batchDone2 <- tempList[[1]]
+eig.val.batchDone2 <- tempList[[2]]
 
 ###-----------------------------------------------------------------------------------------------------------------------------------------
 ###-----------------------------------------------------------------------------------------------------------------------------------------
@@ -237,7 +241,9 @@ removeTableList.BatchCorrected <- getRemoveTable(NonHuman,RemoveS1,RemoveS2,Remo
 removeTable.BatchCorrected <- removeTableList.BatchCorrected[[1]]
 exprDatFiltered.BatchCorrected <- removeTableList.BatchCorrected[[2]]
 
-pcDat.batchCorrected.Filtered<- getTopPCdt(exprDatFiltered.BatchCorrected,80)
+tempList <- getTopPCdt(exprDatFiltered.BatchCorrected,80)
+pcDat.batchCorrected.Filtered <- tempList[[1]]
+eig.val.batchCorrected.Filtered <- tempList[[2]]
 
 ################################################################################################################
 ### Intracellular protein score adjusted, batch corrected data
@@ -251,15 +257,19 @@ removeTableList.IPSregressed <- getRemoveTable(NonHuman,RemoveS1,RemoveS2,Remove
 removeTable.IPSregressed <- removeTableList.IPSregressed[[1]]
 exprDatFiltered.IPSregressed <- removeTableList.IPSregressed[[2]]
 
-pcDat.IPSreg.Filtered <- getTopPCdt(exprDatFiltered.IPSregressed,80)
+tempList <- getTopPCdt(exprDatFiltered.IPSregressed,80)
+pcDat.IPSreg.Filtered <- tempList[[1]]
+eig.val.IPSreg.Filtered <- tempList[[2]]
 
-pcDat.standardised.all <- getTopPCdt(exprDat_norm,80)
+tempList <- getTopPCdt(exprDat_norm,80)
+pcDat.standardised.all <- tempList[[1]]
+eig.val.standardised.all <- tempList[[2]]
 
 ### TableS4 in QC paper shows removeTable.BatchCorrected and removeTable.IPSregressed 
 
 ### store all the RFUs, top PCs(80% variation explained), confounder table at different stages for the convenience of future references
 save(ProMeta, MySoma2022, MySoma, CombinedFrame, exprDat_norm,exprDat.batchDone,exprDat.batchDone2,exprDatFiltered.BatchCorrected,exprDatFiltered.IPSregressed,file=paste0(pathOut,"All.RUFs.Rdat"))
-save(pcDat.standardised,pcDat.batchDone,pcDat.batchDone2,pcDat.batchCorrected.Filtered,pcDat.IPSreg.Filtered,pcDat.standardised.all,file=paste0(pathOut,"pcDat.Rdat"))
+save(pcDat.standardised,pcDat.batchDone,pcDat.batchDone2,pcDat.batchCorrected.Filtered,pcDat.IPSreg.Filtered,pcDat.standardised.all,eig.val.batchDone,eig.val.batchDone2,eig.val.batchCorrected.Filtered,eig.val.IPSreg.Filtered,eig.val.standardised.all,file=paste0(pathOut,"pcDat.Rdat"))
 save(NonHuman,RemoveS1,RemoveS2,RemoveS3,RemoveS4,RemovePro1,RemovePro2,bimodalP1,ConfounderTable1.batchDone,bimodalP2,ConfounderTable1.batchDone2,file=paste0(pathOut,"Filters.Rdat"))
 
 ###-----------------------------------------------------------------------------------------------------------------------------------------
@@ -343,11 +353,11 @@ spin.col <- sapply(1:18,function(x){ifelse(pcDat.batchDone[spun_sams[x],1] > pcD
 spinFrame <-data.frame(cbind(c(rep("Unspun",length(unspun_sams)),rep("Spun",length(spun_sams))),c(pcDat.batchDone[unspun_sams,1],pcDat.batchDone[spun_sams,1])))
 colnames(spinFrame) <- c("Spin","PC1")
 
-### PCA object for standardised and batch corrected and IPS adjusted data
-pcs_standardised <- prcomp(log(exprDat_norm),scale=TRUE)
-pcs_batchDone2 <- prcomp(log(exprDat.batchDone2),scale=TRUE)
+### PCA object for standardized,  batch corrected and IPS adjusted data
+pcs_standardised <- prcomp(log10(exprDat_norm),scale=TRUE)
+pcs_batchDone2 <- prcomp(log10(exprDat.batchDone2),scale=TRUE)
 
-save(IPScore,corPerPro.BatchCorrected,corPerPro.reg,spinFrame,spin.col,pcs_standardised,pcs_batchDone2,file=paste0(pathOut,"Figure2.Rdat"))
+save(IPScore,corPerPro.BatchCorrected,corPerPro.reg,spinFrame,spin.col,eig.val.standardised.all,eig.val.batchDone2,file=paste0(pathOut,"Figure2.Rdat"))
 
 ################################################################################################################
 ### 3. PC2 driver
