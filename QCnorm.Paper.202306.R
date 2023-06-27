@@ -106,7 +106,7 @@ HYBNORM <- function(RawM){
   
   MySoma = do.call(rbind.data.frame,Platelist)  
   
-  MySoma <- matchOrder(RawM,MySoma)
+  MySoma <- matchOrder(RawM,MySoma) # always pay attention whether the transformation changed the row order
   
   return(MySoma)
 }
@@ -178,7 +178,7 @@ MIDNORMcali = function(RawM){ ###caliCase control which sample type to be applie
   
   MySomaTemp = do.call(rbind.data.frame,Platelist)
   
-  MySoma <- matchOrder(RawM,MySomaTemp)
+  MySoma <- matchOrder(RawM,MySomaTemp) # always pay attention whether the transformation changed the row order
   
   return(MySoma)
 }
@@ -222,7 +222,7 @@ PLATESCALE <- function(RawM){
   
   MySoma = do.call(rbind.data.frame,Platelist)  
   
-  MySoma <- matchOrder(RawM,MySoma)
+  MySoma <- matchOrder(RawM,MySoma) # always pay attention whether the transformation changed the row order
   
   return(MySoma)
 }
@@ -264,13 +264,13 @@ CALIBRATION <- function(RawM){
   
   MySoma = do.call(rbind.data.frame,Platelist)  
   
-  MySoma <- matchOrder(RawM,MySoma)
+  MySoma <- matchOrder(RawM,MySoma) # always pay attention whether the transformation changed the row order
   
   return(MySoma)
 }
 
 #__________________________________________________________________________________________________________
-# function to perform plate calibration.
+# function to perform median normalisation on samples
 # input: RawM -- RFU frame before plate calibration.
 # output: MySoma -- RFU frame after plate median normalisation on samples
 MIDNORMsamp = function(RawM){ 
@@ -336,7 +336,7 @@ MIDNORMsamp = function(RawM){
   
   MySomaTemp = do.call(rbind.data.frame,Platelist)
   
-  MySoma <- matchOrder(RawM,MySomaTemp)
+  MySoma <- matchOrder(RawM,MySomaTemp) # always pay attention whether the transformation changed the row order
  
   return(MySoma)
 }

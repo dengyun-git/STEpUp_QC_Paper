@@ -34,7 +34,7 @@ source(paste0(myCodeIn,"QCassess.Paper.202306.R"))
 
 ###-----------------------------------------------------------------------------------------------------------------------------------------
 ###-----------------------------------------------------------------------------------------------------------------------------------------
-### DATA TRANSFORMATION1: Optimized Standardization -- select the optimal normalisation steps from SOMAscan routine standardization
+### DATA TRANSFORMATION1: Optimized Standardization -- select the optimal normalization steps from SOMAscan routine standardization
 ###-----------------------------------------------------------------------------------------------------------------------------------------
 ###-----------------------------------------------------------------------------------------------------------------------------------------
 ### Read in RFU and protein meta information from adat file. RawM -- original RFU frame. ProMeta -- protein metadata. 
@@ -49,7 +49,7 @@ for(Counter in 1:nrow(ProMeta)){
   ProMeta$EntrezGeneSymbol[Counter] <- gsub("\\s+","\\|",ProMeta$EntrezGeneSymbol[Counter])
 }
 
-### Prepare external orthogonal immunoassay measures for the comparisons with SOMAscan measures. 
+### Prepare external immunoassay measures for the comparisons with SOMAscan measures
 Test1 <- c("mcp1bl","il6bl","il8bl","mmp3bl","activinabl","tsg6bl","timp1bl","tgfb1bl","fgf2bl")
 Test2 <- paste0("seq.",c("2578.67","4673.13","3447.64","2788.55","13738.8","5036.50","2211.9","2333.72","3025.50"))
 
@@ -69,7 +69,7 @@ sandwich_master_Historic <- data.frame(sandwich_master_xls_3)
 rownames(sandwich_master_Historic) <- sandwich_master_Historic$PIN
 
 ###-----------------------------------------------------------------------------------------------------------------------------------------
-### Investigate different combinations of SOMAscan routine normalisation steps, and for each combination we store the corresponding evaluation criteria objects for further convenient references.
+### Investigate different combinations of SOMAscan routine normalisation steps, and for each combination we store the corresponding evaluation criteria objects for further convenient reference
 inputList <- list(c("RawM"),c("HYBNORM"),c("HYBNORM","MIDNORMcali","PLATESCALE"),c("HYBNORM","MIDNORMcali","PLATESCALE","MIDNORMsamp"),c("HYBNORM","MIDNORMcali","PLATESCALE","MIDNORMsamp","CALIBRATION"),c("HYBNORM","MIDNORMcali","PLATESCALE","CALIBRATION"))
 
 for(UserInput in inputList){
@@ -92,13 +92,14 @@ for(UserInput in inputList){
   CorData_norm1 <- ExtVal(sandwich_master_Ben,exprDat,Test1,Test2)
   CorData_norm2 <- ExtVal(sandwich_master_Historic,exprDat,Test1,Test2)
   
-  ### for further comparisons across different standardizations, we restore "CVoa","CVinj","R2_norm1","R2_norm2","CorData_norm1","CorData_norm2" by renaming them with distinguishable suffix in separate files
+  ### for further comparisons across different standardization, we restore "CVoa","CVinj","R2_norm1","R2_norm2","CorData_norm1","CorData_norm2" by renaming them with distinguishable suffix in separate files
   l1 <- list(CVoa,CVinj,R2_norm1,R2_norm2,CorData_norm1,CorData_norm2)
   l2 <- c("CVoa","CVinj","R2_norm1","R2_norm2","CorData_norm1","CorData_norm2")
   for(VRct in 1:6){
     VR <- l1[[VRct]]
     gdata::mv(from="VR",to=paste(l2[VRct],paste(UserInput,collapse="."),sep="."))
   }
+  
   DataTransformation1 <- sapply(paste(c("CVoa","CVinj","R2_norm1","R2_norm2","CorData_norm1","CorData_norm2"),paste(UserInput,collapse="."),sep="."),function(x){get(x)})
   save(DataTransformation1,file=paste0(pathOut,paste(UserInput,collapse="."),".DataTransformation1.Rdat"))
 }
@@ -125,11 +126,11 @@ exprDat_norm.HM <- FrarmeList1[[4]]
 ### Dimensionality reduction by PCA, 80% variations are kept by top PCs based on standardized RFU
 pcDat <- pcDat.standardised <- getTopPCdt(exprDat_norm.HM,80)
 
-### Investigate associations between predifined technical confounders and top PCs 
+### Investigate associations between predefined technical confounders and top PCs 
 ConfouderCheck2 <- ConfouderCheck(CombinedFrame,pcDat.standardised)
 ConfounderTable2 <- ConfouderCheck2[[1]]
 
-### detect bimodal signal. 
+### detect bimodal signal
 dev2PC <- rownames(ConfounderTable2)[order(ConfounderTable2[,"sf_iknee_proc_batch"])[1:2]]
 gmm_fit <- mixtools::normalmixEM(pcDat.standardised[,dev2PC[1]])
 plot(gmm_fit,which=2,breaks=100,xlab2=dev2PC[1],main2="Bimodal Signal Distribution along PC2",cex.main=0.9)
@@ -421,7 +422,7 @@ outEXL(pathOut,"ConfounderTable2.IPS.Filtered",signif(ConfounderTable2.IPSreg.Fi
 ### TableS7 in QC paper summaries the above five excel files 
 
 ################################################################################################################
-### 6. UMAP for IPS adjusted/batch corrected data, and batch corrected/non-IPS adjusted data
+### 6. UMAP for data after filtering, on IPS adjusted/batch corrected data, and batch corrected/non-IPS adjusted data
 ################################################################################################################ 
 myUmap.BC.final = umap::umap(pcDat.batchCorrected.Filtered)
 myUmap.IPS.final = umap::umap(pcDat.IPSreg.Filtered)

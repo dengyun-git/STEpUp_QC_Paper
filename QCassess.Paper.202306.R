@@ -7,10 +7,10 @@
 # The two authors have equal contributions for coding
 
 #__________________________________________________________________________________________________________
-# functions to check %CV based on synovial fluid pooled samples and QC plasma calibrators.
+# function to check %CV based on synovial fluid pooled samples.
 # input: calib_norm -- concentration frame for pooled samples and QC plasma calibrators; calibIDs: sample ID for calibrators; clinicType: disease group.
-#        MySoma2022 -- RFU frame; exprDat.Final -- protein concentration only frame.
-# output: temp1 -- a vector of CV for interplate, intraplate, spun/unspun, freeze thaw, different hyaluronidase treatments.
+#        MySoma2022 -- RFU frame; exprDat -- protein concentration frame.
+# output: temp3 -- a vector of CV for interplate, intraplate, spun/unspun, freeze thaw, different hyaluronidase treatments.
 #         plots of accumulative distribution of CVs marked at 80 percentile.
 CalibratorCheck2 <- function(MySoma2022,clinicType,exprDat,titleMessage){
   if(clinicType=="OA"){calibIDs <- paste0("OA POOL-HT-",c(1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23),"/29")
@@ -34,10 +34,10 @@ CalibratorCheck2 <- function(MySoma2022,clinicType,exprDat,titleMessage){
 }
 
 #__________________________________________________________________________________________________________
-# functions to perform biological signal strength evaluation in the RFU frame (namely biological variance explained in the investigated RFU frame)
+# function to perform biological signal strength evaluation in the RFU (namely biological variance explained in the investigated RFU)
 # input: calib_norm -- concentration frame for pooled samples; calibIDs: sample ID for calibrators; clinicType: disease group; 
 #        exprDat_norm: protein concentration only frame; MySoma -- RFU frame.
-# output: temp1 -- a vector of R2 based on synovial fluid pooled samples or QC plasma calibrators.
+# output: R2_norm -- a vector of R2 based on synovial fluid pooled samples or QC plasma calibrators.
 #         plots of accumulative distribution of CVs marked at 80 percentile.
 VarExp2 <- function(MySoma,clinicType,exprDat_norm,titleMessage){
   if(clinicType=="OA"){
@@ -68,8 +68,8 @@ VarExp2 <- function(MySoma,clinicType,exprDat_norm,titleMessage){
 }
 
 #__________________________________________________________________________________________________________
-# function for external check by immunoassay measures.
-# input: sandwich_master -- measurements for the same set of synovial fluid samples from immunoassay; CombinedFrame -- combined frame between RFU and clinical meta information; exprDat_norm -- protein concentration only frame; 
+# function for external comparison with immunoassay measures
+# input: sandwich_master -- measurements for the same set of synovial fluid samples from immunoassay; exprDat_norm -- protein concentration only frame; 
 #       Test1, Test2 -- protein names for the immunoassay and somologic platform.  
 # output: CorData_norm -- correlation matrix with correlation coefficients, p values and confidence intervals.
 ExtVal <- function(sandwich_master,exprDat_norm,Test1,Test2){
@@ -98,8 +98,8 @@ ExtVal <- function(sandwich_master,exprDat_norm,Test1,Test2){
 }
 
 #__________________________________________________________________________________________________________
-# function to obtain the combined frame between RFU and clinical meta information.
-# input: pathIn -- file path of clinicl meta files; MySoma -- RFU frames; ProMeta -- protein meta table derived from somalogic adat file; ProMetaType -- indicator how to obtain non human proteins.
+# function to obtain the combined data frame between RFU and clinical meta information.
+# input: pathIn -- file path of clinicl meta files; MySoma -- RFU frames; ProMeta -- protein meta table derived from somalogic adat file; 
 # output: list contains combined data frame (CombinedFrame), RFU frame with observations only have matching clinical meta information (MySoma); protein concentration only frame (exprDat_norm).
 # note: clinical meta files "discovery_QApheno_1_120522.csv", "Additional data for Yun_TP_27-05-22.xlsx", contain variables such as freeze thaw, processing batch, age ect. 
 #       "adat_to_redcap_SIN_map.csv" is a self generated file which map between adat STEpUp ID and redcap STEpUp ID
@@ -149,10 +149,10 @@ getFrarmeList <- function(pathIn,MySoma,ProMeta){
 
 #__________________________________________________________________________________________________________
 ### function to obtain top PCs which explain the "thresh" percentage variations
-### Input: pc_norm -- PCA object; thresh -- threshold to define top PCs
+### Input: exprDat -- RFU; thresh -- threshold to define top PCs
 ### Output: pcDat -- matrix of the top PCs.
-getTopPCdt <- function(exprDat_norm.HM,thresh){
-  pc_norm <- prcomp(log10(as.matrix(exprDat_norm.HM)),scale = TRUE)
+getTopPCdt <- function(exprDat){
+  pc_norm <- prcomp(log10(as.matrix(exprDat)),scale = TRUE)
   eig.val <- get_eigenvalue(pc_norm) 
   topPC <- which(eig.val$cumulative.variance.percent>thresh)[1]
   pcDat <- pc_norm$x[,1:topPC]
@@ -161,7 +161,7 @@ getTopPCdt <- function(exprDat_norm.HM,thresh){
 }
 
 #__________________________________________________________________________________________________________
-# function to generate pvalue matrix/effect size matrix, showing association between technical confounders.
+# function to generate pvalue matrix/effect size matrix, showing association between technical confounders and PCs or proteins.
 # Input: CombinedFrame -- combined frame between RFU and clinical meta information; whichDat -- data frame for confounder check, per protein level, PC level or total protein level.
 # output: list of a matrix of p values and a matrix of effect size, representing associations with confounders.
 ConfouderCheck <- function(CombinedFrame,whichDat){
@@ -184,7 +184,7 @@ ConfouderCheck <- function(CombinedFrame,whichDat){
       print(ProCt)
       proName = colnames(whichDat)[ProCt]
       
-      if(confounder %in% confList1){
+      if(confounder %in% confList1){ # some predictors are conditioning on cohort
         f <- as.formula(paste0(proName,"~",confounder))
       }else{f <- as.formula(paste0(proName,"~","cohort_name+",confounder))}
       
@@ -197,7 +197,7 @@ ConfouderCheck <- function(CombinedFrame,whichDat){
       pContainer[proName,confounder] <- tempObj[confounder,"Pr(>F)"]
       varContainer[proName,confounder] <- tempObj[confounder,"Sum Sq"]/sum(tempObj[confounder,"Sum Sq"]+tempObj["Residuals","Sum Sq"])
     }
-    print(paste0(Sys.time(),", confounder ",confounder, " rergression done."))
+    print(paste0(Sys.time(),", confounder ",confounder, " rergression done.")) # monitor the progress
   }
   
   return(list(pContainer,varContainer))  
@@ -205,7 +205,7 @@ ConfouderCheck <- function(CombinedFrame,whichDat){
 
 #__________________________________________________________________________________________________________
 # function to perform total protein check. 
-# Input: CombinedFrame -- combined data frame between RFU and clinical meta information; exprDat_norm -- the protein concentration only frame; titleMessage -- for the convenience to generate plot titles.
+# Input: CombinedFrame -- combined data frame between RFU and clinical meta information; exprDat_norm -- the protein concentration frame; titleMessage -- for the convenience to generate plot titles.
 # output: total protein distribution as well as broken down by disease groups; correlation plot between blood staining and total protein concentration.
 #         totalProtein_norm -- total protein concentration for the investigated RFU frame.
 TotalProCheck <- function(CombinedFrame,exprDat_norm,titleMessage){
@@ -224,7 +224,6 @@ TotalProCheck <- function(CombinedFrame,exprDat_norm,titleMessage){
 }
 
 #__________________________________________________________________________________________________________
-
 # function to perform limit of detection check. Lower limit of detection (LoD) and upper limit of detection (uLoD).
 # input: RawM -- investigated RFU frame.
 # output: CompM -- matrix with rows as samples and columns as proteins, each entry is the difference between the protein measures and limit of detection threshholds.
@@ -276,15 +275,14 @@ uLoDdetection <- function(RawM){
 }
 
 #__________________________________________________________________________________________________________
-# functions to calculate associations between proteins and flip flop bimodal signal status
+# function to calculate associations between proteins and bimodal signal status
 # input: exprDat -- protein expression profile. bimodalLabel -- bimodal signal status.
 # output: bimodalP -- pvalue showing associations between protein and bimodal signal status.
-#         bimodalF -- F statistics in the association test.
 bimodalTest <- function(exprDat,bimodalLabel){
   bimodalP=vector(mode="numeric",length=ncol(exprDat))
   names(bimodalP) = colnames(exprDat)
   for(ProCt in 1:ncol(exprDat)){
-    print(ProCt)
+    print(ProCt) # monitor the progress
     proName <- colnames(exprDat)[ProCt]
     model0 <- lm(exprDat[,ProCt]~1)
     model1 <- lm(exprDat[,ProCt]~as.factor(bimodalLabel))
@@ -295,8 +293,8 @@ bimodalTest <- function(exprDat,bimodalLabel){
 }
 
 #__________________________________________________________________________________________________________
-# functions to obtain summary of filtering proteins and samples
-# input: previously calculated removed items; ConfounderTable1: p values showing associations between proteins and confounders.
+# function to obtain summary of filters for proteins and samples
+# input: previously calculated removed items; ConfounderTable1: p values showing associations between proteins and confounders; exprDat: RFU
 # output: removeTable -- summary table for filtering; exprDatFiltered --  RFU contains the remaining proteins and samples.
 getRemoveTable <- function(NonHuman,RemoveS1,RemoveS2,RemoveS3,RemoveS4,RemovePro1,RemovePro2,bimodalP,ConfounderTable1,exprDat){
   RemovePro3 = names(which(bimodalP<0.05/7289)) ### bimodal signal test
@@ -321,7 +319,7 @@ getRemoveTable <- function(NonHuman,RemoveS1,RemoveS2,RemoveS3,RemoveS4,RemovePr
 }
 
 #__________________________________________________________________________________________________________
-# function to find proteins for a particular subcellular locations
+# function to find proteins for a particular subcellular location
 # input: enrichSource -- online resource data for proteins and their subcellular locations; enrichMessage -- annotation of which sublocations are inverstigated
 # output: a list;  enrichSourceDat -- dataframe of gene name and matching main location; enrichSourceType-- character vector showing all the locations; GeneSets -- list, location and corresponding gene names)
 diffProCombineOnline <- function(enrichSource,enrichMessage){
@@ -391,7 +389,7 @@ replaceGenes <- function(all_gene_setsPre,proComplexRef,whichCriteria){
 
 #__________________________________________________________________________________________________________
 # function to calculate correlation coefficients between each protein and PC1
-# input: exprHere -- RFU,ProMeta -- protein meta information, pcDat -- top PCs (80% variations explained)
+# input: exprHere -- RFU; ProMeta -- protein meta information; pcDat -- top PCs (80% variations explained)
 # output: a list;  corPerPro -- Pearson correlation coefficient between protein and PC1, mean.abundacne -- mean abundance of proteins, adjusted for dilution bins)
 getCorPro <- function(exprHere,ProMeta,pcDat){
   abundance <- sapply(1:ncol(exprHere),function(x){exprHere[,x]/ProMeta[colnames(exprHere)[x],"Dilution2"]})
@@ -404,9 +402,9 @@ getCorPro <- function(exprHere,ProMeta,pcDat){
 }
 
 #__________________________________________________________________________________________________________
-# function to plot correlation  coefficients between RFU and external immunoassay measures among different standardization steps
-# input: externalCheck -- correlation test results; titleMessate -- title in the plot
-# output: plot.external -- plot of the coefficients between RFU and external immunoassay measures
+# function to obtain correlation  coefficients between RFU and external immunoassay measures among different standardization steps
+# input: externalCheck -- correlation test results
+# output: CorDatP -- data frame showing correlation between RFU and immunoassay measures
 plotExternal9 <- function(externalCheck){
   CorDatY = as.matrix(externalCheck[,3],ncol=1)
   CorDatX = rep(as.matrix(externalCheck[,1],ncol=1),(ncol(externalCheck)-2))
@@ -539,7 +537,7 @@ plotTechPC <- function(CombinedFrame,pcDatHere){
 }
 
 #__________________________________________________________________________________________________________
-# functions to breakdown CVs for disease group, spun/unspun, plate using synovial fluid pooled samples and QC plasma calibrators.
+# functions to breakdown CVs for disease group, spun/unspun, using synovial fluid pooled samples.
 # input: calib_norm -- concentration frame for pooled samples and QC plasma calibrators; calibIDs: sample ID for calibrators; clinicType: disease group
 # output: list of %CV distributions 
 CVbreak <- function(calib_norm,calibIDs,clinicType){
