@@ -6,7 +6,8 @@
 #            email = yun.deng@kennedy.ox.ac.uk
 #            name = Dr.Luke jostins 
 #            email = luke.jostins@kennedy.ox.ac.uk
-# The two authors have equal contributions for coding
+#            name = Dr.Thomas Perry
+#            email = thomas.perry@ndorms.ox.ac.uk
 
 library(ggplot2)
 library(cowplot)

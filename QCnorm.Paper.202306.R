@@ -5,7 +5,8 @@
 #            email = yun.deng@kennedy.ox.ac.uk
 #            name = Dr.Luke jostins 
 #            email = luke.jostins@kennedy.ox.ac.uk
-# The two authors have equal contributions for coding
+#            name = Dr.Thomas Perry
+#            email = thomas.perry@ndorms.ox.ac.uk
 
 #__________________________________________________________________________________________________________
 ### function to read in RFU frame and extract protein meta data
