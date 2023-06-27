@@ -1,8 +1,4 @@
 ---
-output: 
-  html_document: 
-    keep_md: yes
----
 <img src="STEPUPlogo.png" width="30%" />
 
 Breif direcotry structure of the codes and input/output data shows as follows
