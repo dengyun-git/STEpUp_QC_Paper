@@ -4,7 +4,7 @@
 ### About STEpUp_QC_Paper repository
 R scripts in this repository constructed processing and quality control pipeline for proteomic data of Synovial Fluid measured on SOMAscan platform. Outputs from the codes in this repository contributed to the paper "Methodological development of molecular endotype discovery from synovial fluid of individuals with knee osteoarthritis: the STEpUP OA Consortium".
 
-### Breif direcotry structure of the codes and input/output data shows as follows
+### Breif direcotry structure of the input/output data referred in the codes shows as follows
 
 
 ```
