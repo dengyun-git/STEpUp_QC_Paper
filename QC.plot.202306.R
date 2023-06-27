@@ -21,7 +21,6 @@ myCodeIn <- "/Users/ydeng/Documents/QCpaper.Code/"
 pathIn <- "/Users/ydeng/Documents/QCpaper.Code/STEPUP_DAG_rel002_discovery1/"
 Robj.Path <- "/Users/ydeng/Documents/QCpaper.Code/Robj.Paper/"
 
-source(paste0(myCodeIn,"QCassess.Paper.202306.R"))
 load(file=paste0(Robj.Path,"All.RUFs.Rdat"))
 load(file=paste0(Robj.Path,"pcDat.Rdat"))
 load(file=paste0(Robj.Path,"Figure1.Rdat")) 
@@ -32,6 +31,7 @@ load(file=paste0(Robj.Path,"UmapDis.filtered.Rdat"))
 load(file=paste0(Robj.Path,"CV.OA.Repeats.FreezeThaw.Reprocess.Rdat")) 
 load(file=paste0(Robj.Path,"Filters.Rdat"))
 load(file=paste0(Robj.Path,"TechVS10pc.Rdat"))
+source(paste0(myCodeIn,"QCassess.Paper.202306.R"))
 
 ###_______________________________________________________________________________________________________________________________________________________
 ###_______________________________________________________________________________________________________________________________________________________
