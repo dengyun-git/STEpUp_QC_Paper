@@ -104,6 +104,16 @@ for(UserInput in inputList){
   save(DataTransformation1,file=paste0(pathOut,paste(UserInput,collapse="."),".DataTransformation1.Rdat"))
 }
 
+
+### After storing all the "DataTransformation1.Rdat" for different standardizations as above, it is convenient to directly read in all the CV/R2/CorData related R objects
+for(x in list.files(pathOut,".DataTransformation1.Rdat")){
+  load(paste0(pathOut,x))
+  for(VRct in 1:6){
+    VR <- DataTransformation1[[VRct]]
+    gdata::mv(from="VR",to=names(DataTransformation1)[VRct])
+  }
+}
+
 ###-----------------------------------------------------------------------------------------------------------------------------------------
 ###-----------------------------------------------------------------------------------------------------------------------------------------
 ### DATA TRANSFORMATION2: Batch correction and IPS adjustment
@@ -242,15 +252,18 @@ exprDatFiltered.IPSregressed <- removeTableList.IPSregressed[[2]]
 
 pcDat.IPSreg.Filtered <- getTopPCdt(exprDatFiltered.IPSregressed,80)
 
+pcDat.standardised.all <- getTopPCdt(exprDat_norm,80)
+
 ### TableS4 in QC paper shows removeTable.BatchCorrected and removeTable.IPSregressed 
 
-### store all the RFUs at different stages for the convenience of future references
-save(MySoma2022, MySoma, CombinedFrame, exprDat_norm,exprDat.batchDone,exprDat.batchDone2,exprDatFiltered.BatchCorrected,exprDatFiltered.IPSregressed,file=paste0(pathOut,"All.RUFs.Rdat"))
-save(pcDat.standardised,pcDat.batchDone,pcDat.batchDone2,pcDat.batchCorrected.Filtered,pcDat.IPSreg.Filtered,file=paste0(pathOut,"pcDat.Rdat"))
+### store all the RFUs, top PCs(80% variation explained), confounder table at different stages for the convenience of future references
+save(ProMeta, MySoma2022, MySoma, CombinedFrame, exprDat_norm,exprDat.batchDone,exprDat.batchDone2,exprDatFiltered.BatchCorrected,exprDatFiltered.IPSregressed,file=paste0(pathOut,"All.RUFs.Rdat"))
+save(pcDat.standardised,pcDat.batchDone,pcDat.batchDone2,pcDat.batchCorrected.Filtered,pcDat.IPSreg.Filtered,pcDat.standardised.all,file=paste0(pathOut,"pcDat.Rdat"))
+save(NonHuman,RemoveS1,RemoveS2,RemoveS3,RemoveS4,RemovePro1,RemovePro2,bimodalP1,ConfounderTable1.batchDone,bimodalP2,ConfounderTable1.batchDone2,file=paste0(pathOut,"Filters.Rdat"))
 
 ###-----------------------------------------------------------------------------------------------------------------------------------------
 ###-----------------------------------------------------------------------------------------------------------------------------------------
-### Quality assessment and storing of R objects for further visualization by plots and tables in paper
+### Quality assessment and storing R objects for visualization by plots and tables in paper, which run in QC.plot.202306.R
 ###-----------------------------------------------------------------------------------------------------------------------------------------
 ###-----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -329,7 +342,11 @@ spin.col <- sapply(1:18,function(x){ifelse(pcDat.batchDone[spun_sams[x],1] > pcD
 spinFrame <-data.frame(cbind(c(rep("Unspun",length(unspun_sams)),rep("Spun",length(spun_sams))),c(pcDat.batchDone[unspun_sams,1],pcDat.batchDone[spun_sams,1])))
 colnames(spinFrame) <- c("Spin","PC1")
 
-save(IPScore,corPerPro.BatchCorrected,corPerProIPS.reg,spinFrame,file=paste0(pathOut,"Figure2.Rdat"))
+### PCA object for standardised and batch corrected and IPS adjusted data
+pcs_standardised <- prcomp(log(exprDat_norm),scale=TRUE)
+pcs_batchDone2 <- prcomp(log(exprDat.batchDone2),scale=TRUE)
+
+save(IPScore,corPerPro.BatchCorrected,corPerPro.reg,spinFrame,spin.col,pcs_standardised,pcs_batchDone2,file=paste0(pathOut,"Figure2.Rdat"))
 
 ################################################################################################################
 ### 3. PC2 driver
@@ -351,7 +368,7 @@ colnames(reprocessFrame) <- c("Processing","Sample","TSG101")
 myUmap1 = umap::umap(exprDat_norm)
 myUmap2 = umap::umap(exprDat.batchDone)
 
-save(gmm_fit,bimodalLabel,myUmap1,myUmap2,CombinedFrameKeep,exprDat_normKeep,reprocessFrame,file=paste0(pathOut,"Figure3.Rdat"))
+save(gmm_fit,bimodalLabel,myUmap1,myUmap2,TSGseq,CombinedFrameKeep,exprDat_normKeep,reprocessFrame,file=paste0(pathOut,"Figure3.Rdat"))
 
 ################################################################################################################
 ### 4. External check with immunoassay for IPS adjustment and batch correction
@@ -379,7 +396,7 @@ colnames(externalCheckOA.IPS)[3:ncol(externalCheckOA.IPS)] <- colnames(externalC
 CorDatP.OA.IPS <- plotExternal9(externalCheckOA.IPS)
 CorDatP.INJ.IPS <- plotExternal9(externalCheckINJ.IPS)
 
-save(CorDatP.OA.IPS,CorDatP.INJ.IPS,file=paste0(pathOut,"Figure4.Rdat"))
+save(CorDatP.OA.IPS,CorDatP.INJ.IPS,sandwich_master_Ben,sandwich_master_Historic,Test1,file=paste0(pathOut,"Figure4.Rdat"))
 
 ### Correlation between the 9 immunoassay proteins and IPS score. As shown in TableS6
 KeepOA <- unlist(sapply(sandwich_master_Ben$PIN,function(x){names(IPScore)[grep(x,names(IPScore))]}))
@@ -394,7 +411,6 @@ sapply(Test1[-6],function(x) {cor.test(as.numeric(sandwich_master_Historic[,x]),
 ### 5. Technical confounders association with top 10 PCs 
 ################################################################################################################
 ### for standardised data
-pcDat.standardised.all <- getTopPCdt(exprDat_norm,80)
 ConfouderCheck2.Standerdised <- ConfouderCheck(CombinedFrame,pcDat.standardised.all)
 ConfounderTable2.Standerdised <- ConfouderCheck2.Standerdised[[1]]
 outEXL(pathOut,"ConfounderTable2.Standerdised",signif(ConfounderTable2.Standerdised,4))
@@ -419,7 +435,7 @@ ConfouderCheck2.IPSreg.Filtered <- ConfouderCheck(CombinedFrame[rownames(pcDat.I
 ConfounderTable2.IPSreg.Filtered <- ConfouderCheck2.IPSreg[[1]]
 outEXL(pathOut,"ConfounderTable2.IPS.Filtered",signif(ConfounderTable2.IPSreg.Filtered,4))
 
-### TableS7 in QC paper summaries the above five excel files 
+save(ConfounderTable2.Standerdised,ConfounderTable2.batchCorrected,ConfounderTable2.IPSreg,ConfounderTable2.batchCorrected.Filtered,ConfounderTable2.IPSreg.Filtered,file=paste0(pathOut,"TechVS10pc.Rdat"))
 
 ################################################################################################################
 ### 6. UMAP for data after filtering, on IPS adjusted/batch corrected data, and batch corrected/non-IPS adjusted data

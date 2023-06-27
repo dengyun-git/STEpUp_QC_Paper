@@ -1,5 +1,5 @@
-### This script is specialized for making plots in QC paper
-### Before running this script, QC.paper.2023.06.R need to run first.
+### This script is specialized for making plots and tables in QC paper
+### Before running this script, corresponding R objects need to be loaded, which were stored by running main script QC.paper.2023.06.R.
 # Date: 26 JUN 2023
 # Version: 3.0
 # Author(s): name = Dr.Yun Deng
@@ -16,11 +16,14 @@ library(factoextra)
 library(ggforce)
 library(scales)
 
+myCodeIn <- "/Users/ydeng/Documents/QCpaper.Code/"  
 pathIn <- "/Users/ydeng/Documents/QCpaper.Code/STEPUP_DAG_rel002_discovery1/"
 Robj.Path <- "/Users/ydeng/Documents/QCpaper.Code/Robj.Paper/"
 
+source(paste0(myCodeIn,"QCassess.Paper.202306.R"))
 load(file=paste0(Robj.Path,"All.RUFs.Rdat"))
 load(file=paste0(Robj.Path,"pcDat.Rdat"))
+
 ###_______________________________________________________________________________________________________________________________________________________
 ###_______________________________________________________________________________________________________________________________________________________
 ### Assessment of mean % CV and  mean R2 of each protein, correlation coefficient with immunoassay, comparing  across different standardisations 
@@ -57,7 +60,7 @@ p.immunoassay.INJ <- ggplot(data = CorDatP.INJ) + geom_line(aes(x=as.character(C
 p1  <- ggpubr::ggarrange(p.meanCV,p.meanR2,labels = c("A", "B"),common.legend=TRUE,legend="right")
 p2 <- ggpubr::ggarrange(p.immunoassay.OA,p.immunoassay.INJ,labels = c("C", "D"),common.legend=TRUE,legend="right")
 
-### plot in Figure1 in QC paper
+### plot Figure1 in QC paper
 cowplot::plot_grid(p1, p2,nrow=2,ncol=1,align = "v")
 
 ###_______________________________________________________________________________________________________________________________________________________
@@ -68,11 +71,9 @@ cowplot::plot_grid(p1, p2,nrow=2,ncol=1,align = "v")
 load(file=paste0(Robj.Path,"Figure2.Rdat")) 
 
 ##########################################################################################################################################################
-### Variatoin explained by top 10 PCs after standardisation and IPS adjustment
+### Variation explained by top 10 PCs after standardisation and IPS adjustment
 ##########################################################################################################################################################
-pcs_standardised <- prcomp(log(exprDat_norm),scale=TRUE)
 eig.val.standardised <- get_eigenvalue(pcs_standardised) 
-pcs_batchDone2 <- prcomp(log(exprDat.batchDone2),scale=TRUE)
 eig.val.batchDone2 <- get_eigenvalue(pcs_batchDone2) 
 
 p.variation.PC.before <- ggplot() + geom_bar(aes(x=1:10,y=eig.val.standardised$variance.percent[1:10]),stat="identity",fill="steelblue") + scale_x_discrete(limits=paste0("PC",1:10)) +
@@ -127,7 +128,7 @@ p.RegProAfter <- ggplot() + geom_point(aes(x=pcDat.batchDone2[,"PC1"],y=IPScore)
   theme(axis.text.x = element_text(size=10,face="bold"),axis.title.x =element_text(size = 10,face="bold"), 
         axis.text.y =element_text(size=10,face="bold"),axis.title.y =element_text(size=12.5,face="bold",vjust=-1)) 
 
-### plot in Figure2 in QC paper
+### plot Figure2 in QC paper
 cowplot::plot_grid(p.variation.PC.before, p.abundance.PC1,p.spin.PC1,p.RegProBefore,p.RegProAfter,p.variation.PC.after,labels = c("A", "B","C","D","E","F"),nrow=2,ncol=3,align = "v")
 
 ##########################################################################################################################################################
@@ -190,11 +191,11 @@ MonoCyte <- sapply(keepseq,function(x) {ifelse(any(ProMeta[x,"EntrezGeneSymbol"]
 Neutrophil <- sapply(keepseq,function(x) {ifelse(any(ProMeta[x,"EntrezGeneSymbol"] %in% Tissue.Cell.GeneSets1.F$`Immune system`$Neutrophils),1,0)})
 Macrophage <- sapply(keepseq,function(x) {ifelse(any(ProMeta[x,"EntrezGeneSymbol"] %in% Tissue.Cell.GeneSets1.F$`Immune system`$Macrophages),1,0)})
 
-
 # regression model with broad subcellular location as predictors, correlation coefficient between protein and PC1 as response variable, both on batch corrected/non-IPS adjusted and batch corrected/IPS-adjusted data
 summary(lm(corPerPro.BatchCorrected[[1]][keepseq] ~ log(corPerPro.BatchCorrected[[2]][keepseq])))
 summary(lm(corPerPro.BatchCorrected[[1]][keepseq] ~ as.factor(Nucleus) + log(corPerPro.BatchCorrected[[2]][keepseq])))
 summary(lm(corPerPro.BatchCorrected[[1]][keepseq] ~ as.factor(secretom) + log(corPerPro.BatchCorrected[[2]][keepseq])))
+summary(lm(corPerPro.BatchCorrected[[1]][keepseq] ~ as.factor(MonoCyte) + log(corPerPro.BatchCorrected[[2]][keepseq])))
 summary(lm(corPerPro.BatchCorrected[[1]][keepseq] ~ as.factor(Neutrophil) + log(corPerPro.BatchCorrected[[2]][keepseq])))
 summary(lm(corPerPro.BatchCorrected[[1]][keepseq] ~ as.factor(Macrophage) + log(corPerPro.BatchCorrected[[2]][keepseq])))
 
@@ -292,7 +293,7 @@ p.reprocess <- ggplot(data=reprocessFrame) + geom_point(aes(x=Sample,y=as.numeri
         legend.margin=margin(0,0,0,0),legend.box.margin=margin(-10,-10,-10,-10))
 
 ##########################################################################################################################################################
-### plot in Figure3 in QC paper
+### plot Figure3 in QC paper
 p3 <- ggpubr::ggarrange(p.bimodal.PC2.noColor, p.umap.BimodalBefore.noColor, p.TSGseq, p.reprocess, labels = c("A", "B","C","D"))
 p4  <- ggpubr::ggarrange(p.bimodal.PC2.Before, p.umap.BimodalBefore, p.bimodal.PC2.After, p.umap.BimodalAfter, labels = c("E", "F", "G", "H"),common.legend=TRUE,legend="bottom")
 
@@ -304,6 +305,8 @@ cowplot::plot_grid(p3,p4,nrow=2,ncol=1,align = "v")
 ###_______________________________________________________________________________________________________________________________________________________
 ###_______________________________________________________________________________________________________________________________________________________
 load(file=paste0(Robj.Path,"Figure4.Rdat")) 
+
+NormalisationLabel = c("Raw Data","Optimized Standardisation","Processed without IPS Adjustment","Processed with IPS Adjustment")
 
 p.immunoassay.OA.IPS <- ggplot(data = CorDatP.OA.IPS) + geom_line(aes(x=as.character(CorC),y=as.numeric(CorDatY),group=CorDatX,col=CorDatX)) + ylim(-0.5,1) + scale_colour_manual(values = c("blue","seagreen","green","blueviolet","red","deepskyblue","hotpink","darkgoldenrod4","orange")) +
   xlab("") + ylab("Correlation Coefficient for OA Samples") +labs(color = "Protein") + scale_x_discrete(breaks=seq(1:length(NormalisationLabel)),labels=NormalisationLabel) + theme_bw() + 
@@ -317,9 +320,10 @@ p.immunoassay.INJ.IPS <- ggplot(data = CorDatP.INJ.IPS) + geom_line(aes(x=as.cha
         legend.title =element_text(size = 10,face="bold"), legend.text = element_text(size = 10,face="bold"),
         axis.title.y =element_text(size=10,face="bold"),axis.title.x =element_text(size=10))
 
-### plot in Figure4 in QC paper
+### plot Figure4 in QC paper
 ggpubr::ggarrange(p.immunoassay.OA.IPS,p.immunoassay.INJ.IPS,labels=c("A","B"),ncol=2,nrow=1,common.legend=TRUE,legend="bottom")
 
+### Correlation coefficient between intracellular protein score and 9 immunoassay protein measures, stratified by OA and injury, as shown in TableS6
 KeepOA <- unlist(sapply(sandwich_master_Ben$PIN,function(x){names(IPScore)[grep(x,names(IPScore))]}))
 sapply(Test1,function(x) {cor.test(as.numeric(sandwich_master_Ben[,x]),IPScore[KeepOA],use="pairwise.complete.obs")$estimate})
 sapply(Test1,function(x) {cor.test(as.numeric(sandwich_master_Ben[,x]),IPScore[KeepOA],use="pairwise.complete.obs")$p.value})
@@ -328,13 +332,12 @@ KeepINJ <- unlist(sapply(sandwich_master_Historic$PIN,function(x){names(IPScore)
 sapply(Test1[-6],function(x) {cor.test(as.numeric(sandwich_master_Historic[,x]),IPScore[KeepINJ],use="pairwise.complete.obs")$estimate})
 sapply(Test1[-6],function(x) {cor.test(as.numeric(sandwich_master_Historic[,x]),IPScore[KeepINJ],use="pairwise.complete.obs")$p.value})
 
-
 ###_______________________________________________________________________________________________________________________________________________________
 ###_______________________________________________________________________________________________________________________________________________________
 ### Technical confounder visualisation on the most associated two PCs for batch corrected with/without filtering, batch corrected + IPS adjusted with/without filtering
 ###_______________________________________________________________________________________________________________________________________________________
 ###_______________________________________________________________________________________________________________________________________________________
-### Plot Figure6 and Figure S6 in QC paper
+### plot Figure6 and FigureS6 in QC paper
 plotTechPC(CombinedFrame,pcDat.batchDone)
 plotTechPC(CombinedFrame,pcDat.batchDone2)
 plotTechPC(CombinedFrame,pcDat.batchCorrected.Filtered)
@@ -649,5 +652,41 @@ p.PCA.BimodalAfter <- ggpairs(data.frame(pcDat.batchDone[,1:5]), columns=1:5, ae
 p.PCA.BimodalBefore
 p.PCA.BimodalAfter
 
+###_______________________________________________________________________________________________________________________________________________________
+###_______________________________________________________________________________________________________________________________________________________
+### Filter summary for batch corrected non-IPS adjusted and IPS adjusted data
+###_______________________________________________________________________________________________________________________________________________________
+###_______________________________________________________________________________________________________________________________________________________
+### Summary of filters for samples and proteins, as shown in TableS4 in QC paper
+load(file=paste0(Robj.Path,"Filters.Rdat"))
+getRemoveTable(NonHuman,RemoveS1,RemoveS2,RemoveS3,RemoveS4,RemovePro1,RemovePro2,bimodalP1,ConfounderTable1.batchDone[,c(7,10)],exprDat.batchDone)[[1]]
+getRemoveTable(NonHuman,RemoveS1,RemoveS2,RemoveS3,RemoveS4,RemovePro1,RemovePro2,bimodalP2,ConfounderTable1.batchDone2[,c(7,10)],exprDat.batchDone2)[[1]]
 
+###_______________________________________________________________________________________________________________________________________________________
+###_______________________________________________________________________________________________________________________________________________________
+### Summary of associations between technical confounders and top 10 PCs
+###_______________________________________________________________________________________________________________________________________________________
+###_______________________________________________________________________________________________________________________________________________________
+load(file=paste0(Robj.Path,"TechVS10pc.Rdat"))
 
+### for standardised data
+View(signif(ConfounderTable2.Standerdised[1:10,],3))
+ConfounderTable2.Standerdised.padj <- sapply(1:ncol(ConfounderTable2.Standerdised),function(x){p.adjust(ConfounderTable2.Standerdised[,x],method="BH")})
+
+### for batch corrected, non-IPS adjusted, non-filtered data
+View(signif(ConfounderTable2.batchCorrected[1:10,],3))
+ConfounderTable2.batchCorrected.padj <- sapply(1:ncol(ConfounderTable2.batchCorrected),function(x){p.adjust(ConfounderTable2.batchCorrected[,x],method="BH")})
+
+### for batch corrected, IPS adjusted, non-filtered data
+View(signif(ConfounderTable2.IPSreg[1:10,],3))
+ConfounderTable2.IPSreg.padj <- sapply(1:ncol(ConfounderTable2.IPSreg),function(x){p.adjust(ConfounderTable2.IPSreg[,x],method="BH")})
+
+### for batch corrected, non-IPS adjusted, filtered data
+View(signif(ConfounderTable2.batchCorrected.Filtered[1:10,],3)) 
+ConfounderTable2.batchCorrected.Filtered.padj <- sapply(1:ncol(ConfounderTable2.batchCorrected.Filtered),function(x){p.adjust(ConfounderTable2.batchCorrected.Filtered[,x],method="BH")})
+
+### for batch corrected, IPS adjusted, filtered data
+View(signif(ConfounderTable2.IPSreg.Filtered[1:10,],3))
+ConfounderTable2.IPSreg.Filtered.padj <- sapply(1:ncol(ConfounderTable2.IPSreg.Filtered),function(x){p.adjust(ConfounderTable2.IPSreg.Filtered[,x],method="BH")})
+
+### TableS7 in QC paper summaries the above five data frames

@@ -151,7 +151,7 @@ getFrarmeList <- function(pathIn,MySoma,ProMeta){
 ### function to obtain top PCs which explain the "thresh" percentage variations
 ### Input: exprDat -- RFU; thresh -- threshold to define top PCs
 ### Output: pcDat -- matrix of the top PCs.
-getTopPCdt <- function(exprDat){
+getTopPCdt <- function(exprDat,thresh){
   pc_norm <- prcomp(log10(as.matrix(exprDat)),scale = TRUE)
   eig.val <- get_eigenvalue(pc_norm) 
   topPC <- which(eig.val$cumulative.variance.percent>thresh)[1]
