@@ -277,7 +277,6 @@ save(NonHuman,RemoveS1,RemoveS2,RemoveS3,RemoveS4,RemovePro1,RemovePro2,bimodalP
 ### Quality assessment and storing R objects for visualization by plots and tables in paper, which run in QC.plot.202306.R
 ###-----------------------------------------------------------------------------------------------------------------------------------------
 ###-----------------------------------------------------------------------------------------------------------------------------------------
-
 ################################################################################################################
 ### 1. Comparisons for different standardizations 
 ################################################################################################################
@@ -376,8 +375,8 @@ reprocessFrame <- data.frame(cbind(c(rep("Original",3),rep("Reprocessed",3)),rep
 colnames(reprocessFrame) <- c("Processing","Sample","TSG101") 
 
 ### UMAP visualization on the data before and after bimodal batch correction
-myUmap1 = umap::umap(exprDat_norm)
-myUmap2 = umap::umap(exprDat.batchDone)
+myUmap1 = umap::umap(exprDat_norm,random_state=123) #set seeds for UMAP
+myUmap2 = umap::umap(exprDat.batchDone,random_state=123)
 
 save(gmm_fit,bimodalLabel,myUmap1,myUmap2,TSGseq,CombinedFrameKeep,exprDat_normKeep,reprocessFrame,file=paste0(pathOut,"Figure3.Rdat"))
 
@@ -451,8 +450,8 @@ save(ConfounderTable2.Standerdised,ConfounderTable2.batchCorrected,ConfounderTab
 ################################################################################################################
 ### 6. UMAP for data after filtering, on IPS adjusted/batch corrected data, and batch corrected/non-IPS adjusted data
 ################################################################################################################ 
-myUmap.BC.final = umap::umap(pcDat.batchCorrected.Filtered)
-myUmap.IPS.final = umap::umap(pcDat.IPSreg.Filtered)
+myUmap.BC.final = umap::umap(pcDat.batchCorrected.Filtered,random_state=123) # set seeds for UMAP
+myUmap.IPS.final = umap::umap(pcDat.IPSreg.Filtered,random_state=123)
 CombinedFrame1 <- CombinedFrame[rownames(pcDat.batchCorrected.Filtered),]
 CombinedFrame2 <- CombinedFrame[rownames(pcDat.IPSreg.Filtered),]
 keepID1 <- which(!is.na(CombinedFrame1$sf_iknee_qc_group))
