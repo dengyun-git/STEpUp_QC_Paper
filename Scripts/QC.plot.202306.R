@@ -136,14 +136,14 @@ cowplot::plot_grid(p.variation.PC.before, p.abundance.PC1,p.spin.PC1,p.RegProBef
 ##########################################################################################################################################################
 ### PC1 driver regression model
 ##########################################################################################################################################################
-SubLocation <- read.csv(paste0(pathIn,"online resource/subcellular_location.tsv"),sep="\t") 
+SubLocation <- read.csv(paste0(pathIn,"subcellular_location.tsv"),sep="\t") 
 LocationList <- diffProCombineOnline(SubLocation,"Main.location")
 SubLocationDat = LocationList[[1]]
 SubLocationType = LocationList[[2]]
 SublocationSet = LocationList[[3]]
-CytoplasmL <- read.csv(paste0(pathIn,"online resource/Cytoplasm.txt"))[,1]
-NucleusL <- read.csv(paste0(pathIn,"online resource/Nucleus.txt"))[,1]
-EndomembraneL <- read.csv(paste0(pathIn,"online resource/Endomembrane.txt"))[,1]
+CytoplasmL <- read.csv(paste0(pathIn,"Cytoplasm.txt"))[,1]
+NucleusL <- read.csv(paste0(pathIn,"Nucleus.txt"))[,1]
+EndomembraneL <- read.csv(paste0(pathIn,"Endomembrane.txt"))[,1]
 secreted <- SubLocation$Gene.name[which(SubLocation$Extracellular.location=="Predicted to be secreted")]
 
 # for each protein map their detailed cell location to the broad cell location types (Cytoplasm, Nucleus, Endomembrane, and Secreted) 
@@ -171,7 +171,7 @@ Endomembrane <- sapply(keepseq,function(x) {ifelse(any(ProMeta[x,"EntrezGeneSymb
 secretom <- sapply(keepseq,function(x) {ifelse(any(ProMeta[x,"EntrezGeneSymbol"] %in% SubLocationBroadSet$secreted),1,0)})
 
 # for each protein check whether it is a marker for monocyte, neutrophil, macrophage
-Tissue.Cell.Raw <- read.table(paste0(pathIn,"online resource/PanglaoDB_markers_27_Mar_2020.tsv"),h=T,sep="\t",quote="")
+Tissue.Cell.Raw <- read.table(paste0(pathIn,"PanglaoDB_markers_27_Mar_2020.tsv"),h=T,sep="\t",quote="")
 Tissue.Cell.Raw <- Tissue.Cell.Raw[grep("Hs",Tissue.Cell.Raw$species),] # keep only human information
 TissueList <- na.omit(unique(Tissue.Cell.Raw$organ)) # extract all the tissue names
 
