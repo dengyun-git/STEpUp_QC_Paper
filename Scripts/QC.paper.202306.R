@@ -272,7 +272,7 @@ save(ProMeta, MySoma2022, MySoma, CombinedFrame, exprDat_norm,exprDat.batchDone,
 save(pcDat.standardised,pcDat.batchDone,pcDat.batchDone2,pcDat.batchCorrected.Filtered,pcDat.IPSreg.Filtered,pcDat.standardised.all,eig.val.batchDone,eig.val.batchDone2,eig.val.batchCorrected.Filtered,eig.val.IPSreg.Filtered,eig.val.standardised.all,file=paste0(pathOut,"pcDat.Rdat"))
 save(NonHuman,RemoveS1,RemoveS2,RemoveS3,RemoveS4,RemovePro1,RemovePro2,bimodalP1,ConfounderTable1.batchDone,bimodalP2,ConfounderTable1.batchDone2,file=paste0(pathOut,"Filters.Rdat"))
 
-###-----------------------------------------------------------------------------------------------------------------------------------------
+mn###-----------------------------------------------------------------------------------------------------------------------------------------
 ###-----------------------------------------------------------------------------------------------------------------------------------------
 ### Quality assessment and storing R objects for visualization by plots and tables in paper, which run in QC.plot.202306.R
 ###-----------------------------------------------------------------------------------------------------------------------------------------
@@ -442,7 +442,7 @@ outEXL(pathOut,"ConfounderTable2.BC.Filtered",signif(ConfounderTable2.batchCorre
 
 ### for batch corrected, IPS adjusted, filtered data
 ConfouderCheck2.IPSreg.Filtered <- ConfouderCheck(CombinedFrame[rownames(pcDat.IPSreg.Filtered),],pcDat.IPSreg.Filtered)
-ConfounderTable2.IPSreg.Filtered <- ConfouderCheck2.IPSreg[[1]]
+ConfounderTable2.IPSreg.Filtered <- ConfouderCheck2.IPSreg.Filtered[[1]]
 outEXL(pathOut,"ConfounderTable2.IPS.Filtered",signif(ConfounderTable2.IPSreg.Filtered,4))
 
 save(ConfounderTable2.Standerdised,ConfounderTable2.batchCorrected,ConfounderTable2.IPSreg,ConfounderTable2.batchCorrected.Filtered,ConfounderTable2.IPSreg.Filtered,file=paste0(pathOut,"TechVS10pc.Rdat"))
