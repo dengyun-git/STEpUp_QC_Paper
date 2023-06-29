@@ -39,7 +39,7 @@ source(paste0(myCodeIn,"QCassess.Paper.202306.R"))
 ###-----------------------------------------------------------------------------------------------------------------------------------------
 ###-----------------------------------------------------------------------------------------------------------------------------------------
 ### Read in RFU and protein meta information from adat file. RawM -- original RFU frame. ProMeta -- protein metadata. 
-RFUlist <- prepareRFU(pathIn,"somascan/adat/SS-228545_v4.1.20220224.adat")
+RFUlist <- prepareRFU(pathIn,"SS-228545_v4.1.20220224.adat")
 RawM <- RFUlist[[1]]
 ProMeta <- RFUlist[[2]]
 
@@ -215,7 +215,7 @@ SampRatio2 = apply(CompM2,1,function(x){length(which(x>0))/ncol(CompM2)})
 RemoveS3 = c(MySoma[names(which(SampRatio1>0.25)),"STEpUpId"],MySoma[names(which(SampRatio2>0.25)),"STEpUpId"])
 
 ### Somascan inhouse filter Hybridization Scale Factor > 2.5
-RemoveS4F = prepareRFU(pathIn,"somascan/adat/SS-228545_v4.1.hybNorm.medNormInt.plateScale.calibrate.anmlQC.qcCheck.20220224.adat")[[1]]
+RemoveS4F = prepareRFU(pathIn,"SS-228545_v4.1.hybNorm.medNormInt.plateScale.calibrate.anmlQC.qcCheck.20220224.adat")[[1]]
 # all(rownames(MySoma)==rownames(RemoveS4F)) ### always check the orders of data frames which should be matching each other 
 RemoveS4 = MySoma$STEpUpId[which(RemoveS4F$HybControlNormScale>2.5)]
 
