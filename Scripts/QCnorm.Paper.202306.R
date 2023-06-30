@@ -1,5 +1,4 @@
 # This script includes the functions for processing the raw RFU data, before quality assessment, to be called by QC.paper.202306.R. 
-# Date: 26 JUN 2023
 # Version: 3.0
 # Author(s): name = Dr.Yun Deng
 #            email = yun.deng@kennedy.ox.ac.uk

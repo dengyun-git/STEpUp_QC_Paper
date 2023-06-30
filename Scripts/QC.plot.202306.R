@@ -1,6 +1,5 @@
 ### This script is specialized for making plots and tables in QC paper
 ### Before running this script, corresponding R objects need to be loaded, which were stored by running main script QC.paper.2023.06.R.
-# Date: 26 JUN 2023
 # Version: 3.0
 # Author(s): name = Dr.Yun Deng
 #            email = yun.deng@kennedy.ox.ac.uk

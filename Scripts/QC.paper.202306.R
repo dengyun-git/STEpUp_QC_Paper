@@ -1,6 +1,5 @@
 ### This script quality controlled the protein profiles measured on SOMAscan platform (Relative Fluorescence Unit, abbreviation of "RFU").
 ### After required normalization, batch adjustment, sample and protein filtering, series of quality assessment were performed. 
-# Date: 26 JUN 2023
 # Version: 3.0
 # # Author(s): name = Dr.Yun Deng
 #              email = yun.deng@kennedy.ox.ac.uk

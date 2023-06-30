@@ -102,12 +102,12 @@ ExtVal <- function(sandwich_master,exprDat_norm,Test1,Test2){
 # function to obtain the combined data frame between RFU and clinical meta information.
 # input: pathIn -- file path of clinicl meta files; MySoma -- RFU frames; ProMeta -- protein meta table derived from somalogic adat file; 
 # output: list contains combined data frame (CombinedFrame), RFU frame with observations only have matching clinical meta information (MySoma); protein concentration only frame (exprDat_norm).
-# note: clinical meta files "discovery_QApheno_1_120522.csv", "Additional data for Yun_TP_27-05-22.xlsx", contain variables such as freeze thaw, processing batch, age ect. 
+# note: clinical meta files "discovery_QApheno_1_120522.csv", "discovery_QApheno_2_270522.xlsx", contain variables such as freeze thaw, processing batch, age ect. 
 #       "adat_to_redcap_SIN_map.csv" is a self generated file which map between adat STEpUp ID and redcap STEpUp ID
 getFrarmeList <- function(pathIn,MySoma,ProMeta){
   ### read in clinic metadata
   ClinicFrame <- read.csv(paste0(pathIn,'discovery_QApheno_1_120522.csv'))
-  ClinicFrameTempSup <- read_excel(paste0(pathIn,'Additional data for Yun_TP_27-05-22.xlsx'))
+  ClinicFrameTempSup <- read_excel(paste0(pathIn,'discovery_QApheno_2_270522.xlsx'))
   ClinicFrame <- merge(ClinicFrame,ClinicFrameTempSup[,c("sf_iknee_sample_id_number","sf_iknee_proc_treat_date","age")],by="sf_iknee_sample_id_number")
   
   ###SIN mapper
