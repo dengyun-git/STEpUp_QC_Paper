@@ -17,6 +17,7 @@ userPath <- "/Users/ydeng/Documents/QCpaper.Code/"
 
 ###-----------------------------------------------------------------------------------------------------------------------------------------
 ###-----------------------------------------------------------------------------------------------------------------------------------------
+### load in R packages required by this script. If not installed yet, use BiocManager to install from CRAN repository
 library(readxl) 
 library(SomaDataIO)
 library(nlme)
