@@ -9,6 +9,14 @@
 #              name = Dr.Thomas Perry
 #              email = thomas.perry@ndorms.ox.ac.uk
 
+
+###-----------------------------------------------------------------------------------------------------------------------------------------
+###-----------------------------------------------------------------------------------------------------------------------------------------
+### user set the file path where the folders of Resource file and Scripts are stored downloaded from Github https://github.com/dengyun-git/STEpUp_QC_Paper
+userPath <- "/Users/ydeng/Documents/QCpaper.Code/" 
+
+###-----------------------------------------------------------------------------------------------------------------------------------------
+###-----------------------------------------------------------------------------------------------------------------------------------------
 library(readxl) 
 library(SomaDataIO)
 library(nlme)
@@ -25,9 +33,11 @@ library(ggpubr)
 library(gdata)
 library(cowplot)
 
-myCodeIn <- "/Users/ydeng/Documents/QCpaper.Code/Scripts/"  
-pathIn <- "/Users/ydeng/Documents/QCpaper.Code/Resource File/"
-pathOut <- "/Users/ydeng/Documents/QCpaper.Code/Robj.Paper/"
+dir.create(paste0(userPath,"Robj.Paper")) ### automatically create a folder for output from this script, used to restore objects for further plots and tables 
+
+myCodeIn <- paste0(userPath,"Scripts/")  
+pathIn <- paste0(userPath,"Resource File/")
+pathOut <- paste0(userPath,"Robj.Paper/")
 
 ### load in two R scripts, which contain functions to be called
 source(paste0(myCodeIn,"QCnorm.Paper.202306.R"))

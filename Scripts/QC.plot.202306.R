@@ -9,6 +9,13 @@
 #            name = Dr.Thomas Perry
 #            email = thomas.perry@ndorms.ox.ac.uk
 
+###-----------------------------------------------------------------------------------------------------------------------------------------
+###-----------------------------------------------------------------------------------------------------------------------------------------
+### user set the file path where the folders of Resource file and Scripts are stored downloaded from Github https://github.com/dengyun-git/STEpUp_QC_Paper
+userPath <- "/Users/ydeng/Documents/QCpaper.Code/" 
+
+###-----------------------------------------------------------------------------------------------------------------------------------------
+###-----------------------------------------------------------------------------------------------------------------------------------------
 library(ggplot2)
 library(cowplot)
 library(GGally)
@@ -17,9 +24,9 @@ library(factoextra)
 library(ggforce)
 library(scales)
 
-myCodeIn <- "/Users/ydeng/Documents/QCpaper.Code/Scripts/"  
-pathIn <- "/Users/ydeng/Documents/QCpaper.Code/Resource File/"
-Robj.Path <- "/Users/ydeng/Documents/QCpaper.Code/Robj.Paper/"
+myCodeIn <- paste0(userPath,"Scripts/")  
+pathIn <- paste0(userPath,"Resource File/")
+Robj.Path <- paste0(userPath,"Robj.Paper/")
 
 load(file=paste0(Robj.Path,"All.RUFs.Rdat"))
 load(file=paste0(Robj.Path,"pcDat.Rdat"))
