@@ -71,7 +71,8 @@ These files are stored in the Github folder called 'Resource File'.
 * The user will need to install the R packages:
 readxl, SomaDataIO, nlme, sva, factoextra, umap, ggplot2, GGally, mixtools, data.table, openxlsx, writexl, ggpubr, gdata cowplot, ggpubr, ggforce, scales.
 
-  An example to install package "limma" with commond as follows:\n
+  An example to install package "limma" with commond as follows:
+  
   if (!requireNamespace("BiocManager", quietly = TRUE))\n
   install.packages("BiocManager")\n
   BiocManager::install("limma")
