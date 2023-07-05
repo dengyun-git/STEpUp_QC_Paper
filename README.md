@@ -5,10 +5,8 @@ Date: Friday 30th June 2023
 
 Project: STEpUP OA
 
-Author: Dr Yun Deng     | Email:  yun.deng @ kennedy.ox.ac.uk
-
-Author: Dr.Luke jostins | Email:  luke.jostins @ kennedy.ox.ac.uk
-
+Author: Dr Yun Deng     | Email:  yun.deng @ kennedy.ox.ac.uk\
+Author: Dr.Luke jostins | Email:  luke.jostins @ kennedy.ox.ac.uk\
 Author: Dr.Thomas Perry | Email:  thomas.perry @ ndorms.ox.ac.uk
 
 Github repository access: https://github.com/dengyun-git/STEpUp_QC_Paper (administrator: Y.Deng)
@@ -54,7 +52,7 @@ These scripts are stored in the Github folder called 'Scripts'.
    11) subcellular_location.tsv (online resources downloaded from: https://www.proteinatlas.org/humanproteome/subcellular)
 These files are stored in the Github folder called 'Resource File'.
    
-### General notes and comments for use:
+### General notes and comments for use
 * Once the user has downloaded the 'Resource File' folder and the 'Scripts' folder from GitHub to their 'Downloads' folder on their local machine, the following user input is required:
   1) Script: 'QC.paper.202306.R'
    --> on line 15 of the code, the user will need to change the path name: userPath <-       "/Users/ydeng/Documents/QCpaper.Code/" ---> CHANGE TO user local path <--- e.g. "C:/Users/tperry/Downloads/"
@@ -67,13 +65,11 @@ These files are stored in the Github folder called 'Resource File'.
    Order: 1) QC.paper.202306.R first & 2) QC.plot.202306.R
 * The script called 'QC.paper.202306' will generate a new folder called 'Robj.Paper' in the users personal Downloads folder (if the user is working out of this folder location) and will store R objects for plots and tables.  
 
-### Other:
+### Other
 * The user will need to install the R packages:
-readxl, SomaDataIO, nlme, sva, factoextra, umap, ggplot2, GGally, mixtools, data.table, openxlsx, writexl, ggpubr, gdata cowplot, ggpubr, ggforce, scales.
-
-  An example to install package "limma" with commond as follows:
-  
-  if (!requireNamespace("BiocManager", quietly = TRUE))\n
-  install.packages("BiocManager")\n
+readxl, SomaDataIO, nlme, sva, factoextra, umap, ggplot2, GGally, mixtools, data.table, openxlsx, writexl, ggpubr, gdata cowplot, ggpubr, ggforce, scales.\
+  An example to install package "limma" with commond as follows:\
+  if (!requireNamespace("BiocManager", quietly = TRUE))\
+  install.packages("BiocManager")\
   BiocManager::install("limma")
 
