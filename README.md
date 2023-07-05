@@ -35,7 +35,7 @@ This repository comprises scripts and data required to process SomaLogic proteom
   1) QC.paper.202306.R --------> main script used to transform Somalogic synovial fluid (SF) proteomic data and to perform a series of data quality assessments (i.e. our 'QC pipeline').
    2) QC.plot.202306.R ---------> script used to make plots and tables as shown in our 'QC manuscript'. 
    3) QCnorm.Paper.202306.R ----> functions used to perform each of our standardization steps. This function is called by QC.paper.202306.R 
-   4) QCassess.Paper.202306.R --> functions used to perform quality evaluation, and to generate plots and tables. This function is called by QC.paper.202306.R.
+   4) QCassess.Paper.202306.R --> functions used to perform quality evaluation, and to generate plots and tables. This function is called by QC.paper.202306.R.\
 These scripts are stored in the Github folder called 'Scripts'.
 
 * This repository also includes x4 .xlsx/csv files, 3x .txt files and 4x .tsv/.adat files which are required by the scripts: 
@@ -46,10 +46,10 @@ These scripts are stored in the Github folder called 'Scripts'.
    5) Cytoplasm.txt 
    6) Endomembrane.txt 
    7) Nucleus.txt 
-   8) PanglaoDB_markers_27_Mar_2020.tsv (online resources downloaded from: https://panglaodb.se/)
-   9) SS-228545_v4.1.20220224.adat 
-   10) SS-228545_v4.1.hybNorm.medNormInt.plateScale.calibrate.anmlQC.qcCheck.20220224.adat 
-   11) subcellular_location.tsv (online resources downloaded from: https://www.proteinatlas.org/humanproteome/subcellular)
+   8) SS-228545_v4.1.20220224.adat 
+   9) SS-228545_v4.1.hybNorm.medNormInt.plateScale.calibrate.anmlQC.qcCheck.20220224.adat 
+   10) subcellular_location.tsv (online resources downloaded from: https://www.proteinatlas.org/humanproteome/subcellular)
+   11) PanglaoDB_markers_27_Mar_2020.tsv (online resources downloaded from: https://panglaodb.se) \
 These files are stored in the Github folder called 'Resource File'.
    
 ### General notes and comments for use
