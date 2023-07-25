@@ -321,48 +321,6 @@ getRemoveTable <- function(NonHuman,RemoveS1,RemoveS2,RemoveS3,RemoveS4,RemovePr
 }
 
 #__________________________________________________________________________________________________________
-# function to find proteins for a particular subcellular location
-# input: enrichSource -- online resource data for proteins and their subcellular locations; enrichMessage -- annotation of which sublocations are inverstigated
-# output: a list;  enrichSourceDat -- dataframe of gene name and matching main location; enrichSourceType-- character vector showing all the locations; GeneSets -- list, location and corresponding gene names)
-diffProCombineOnline <- function(enrichSource,enrichMessage){
-  
-  enrichSourceDat <- enrichSource[,c("Gene.name",enrichMessage)]
-  enrichSourceTypeR <- levels(as.factor(enrichSource[,enrichMessage]))
-  
-  ### extract all the types for enrichment test. delimiter: "sepSym" should be selected by looking at the raw data frame
-  if(length(grep("location",enrichMessage))!=0){sepSym = ";"
-  }else if(length(grep("Tissue",enrichMessage))!=0){sepSym=", "
-  }else if(length(grep("Cell.type",enrichMessage))!=0){sepSym="/"} 
-  else{sepSym = ""} ### leave the chance to add more enrichMessage types  
-  
-  ### process element with multiple entries
-  if(sepSym != ""){
-    k=1
-    enrichSourceType=vector()
-    for (locationCouter in 1:length(enrichSourceTypeR)){
-      templocal = enrichSourceTypeR[locationCouter]
-      if(!grepl(sepSym,templocal)){enrichSourceType[k]=templocal
-      k=k+1}
-      else{templocal2 <- strsplit(templocal,sepSym)[[1]]
-      for(splitC in 1:length(templocal2)){enrichSourceType[k+splitC-1]=templocal2[splitC]}
-      k=k+length(templocal2)
-      }
-    }
-  }
-  
-  enrichSourceTypeA = names(table(enrichSourceType))
-  
-  ###construct reference genesets, with elements of type name and matching EntrezGene name. 
-  GeneSets=vector(mode="list",length=length(enrichSourceTypeA))
-  for (subCounter in 1:length(enrichSourceTypeA)){
-    GeneSets[[subCounter]] = enrichSourceDat[grep(enrichSourceTypeA[subCounter],enrichSourceDat[,enrichMessage]),"Gene.name"]
-    names(GeneSets)[subCounter] = enrichSourceTypeA[subCounter]
-  } 
-  
-  return(list(enrichSourceDat,enrichSourceType,GeneSets))
-}
-
-#__________________________________________________________________________________________________________
 # function to calculate correlation coefficients between each protein and PC1
 # input: exprHere -- RFU; ProMeta -- protein meta information; pcDat -- top PCs (80% variations explained)
 # output: a list;  corPerPro -- Pearson correlation coefficient between protein and PC1, mean.abundacne -- mean abundance of proteins, adjusted for dilution bins)
@@ -370,7 +328,6 @@ getCorPro <- function(exprHere,ProMeta,pcDat){
   abundance <- sapply(1:ncol(exprHere),function(x){exprHere[,x]/ProMeta[colnames(exprHere)[x],"Dilution2"]})
   colnames(abundance) <- colnames(exprHere)
   mean.abundacne <- apply(abundance,2,mean)
-  keepseq <- rownames(ProMeta)[which(ProMeta$Organism=="Human" & ProMeta$Type=="Protein")]
   corPerPro <- sapply(1:ncol(exprHere), function(x){cor(pcDat[,1],log(exprHere[,x]))})
   names(corPerPro) <- colnames(exprHere)
   return(list(corPerPro,mean.abundacne))
@@ -409,7 +366,7 @@ outEXL <- function(pathOut,sheetname,whichX){
 # function to visualize technical confounders on their most associated two PCs
 # input: CombinedFrame -- combined frame between RFU and clinical data meta information; pcDatHere -- PCA space (80% variation explained); 
 # output: cowplot
-plotTechPC <- function(CombinedFrame,pcDatHere){
+plotTechPC <- function(CombinedFrame,pcDatHere,X){
   ConfouderCheck2.QCed <- ConfouderCheck(CombinedFrame[rownames(pcDatHere),],pcDatHere)
   ConfounderTable2.QCed <- ConfouderCheck2.QCed[[1]]
   
@@ -507,7 +464,7 @@ plotTechPC <- function(CombinedFrame,pcDatHere){
           axis.title.y =element_text(size=11,face="bold"))
   
   cowplot::plot_grid(p.platePosition.plan.QC, p.blood.QCed, p.sampleVol.QCed, p.sampleAge.QCed, p.FreezeThawCycle.QCed,p.disease.QCed,
-                     labels = c("A", "B","C","D", "E","F"),nrow=2,ncol=3,align = "v")
+                     labels = c(X, "","","", "",""),nrow=2,ncol=3,align = "v")
   
 }
 

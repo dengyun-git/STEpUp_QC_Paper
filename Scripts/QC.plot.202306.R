@@ -60,13 +60,13 @@ p.meanR2 <- ggplot(data = meanR2) + geom_point(aes(x=NormalisationSteps,y=100*as
         axis.title.y =element_text(size=10,face="bold"),axis.title.x =element_text(size=10)) 
 
 p.immunoassay.OA <- ggplot(data = CorDatP.OA) + geom_line(aes(x=as.character(CorC),y=as.numeric(CorDatY),group=CorDatX,col=CorDatX)) + ylim(-0.75,1) + 
-  xlab("") + ylab("Correlation Coefficient\nOA Samples") +labs(color = "Protein") + scale_x_discrete(breaks=seq(1:length(StandardisationLabel)),labels=StandardisationLabel) + scale_colour_manual(values = c("blue","seagreen","green","blueviolet","red","deepskyblue","hotpink","darkgoldenrod4","orange"))  + theme_bw() + 
+  xlab("") + ylab("Correlation Coefficient\n(OA Samples)") +labs(color = "Protein") + scale_x_discrete(breaks=seq(1:length(StandardisationLabel)),labels=StandardisationLabel) + scale_colour_manual(values = c("blue","seagreen","green","blueviolet","red","deepskyblue","hotpink","darkgoldenrod4","orange"))  + theme_bw() + 
   theme(axis.text.x = element_text(size=10, angle=30,face="bold",hjust=1),axis.text.y = element_text(size=10,face="bold"),
         legend.title =element_text(size = 9,face="bold"), legend.text = element_text(size = 9,face="bold"),
         axis.title.y =element_text(size=10,face="bold"),axis.title.x =element_text(size=10))
 
 p.immunoassay.INJ <- ggplot(data = CorDatP.INJ) + geom_line(aes(x=as.character(CorC),y=as.numeric(CorDatY),group=CorDatX,col=CorDatX)) + ylim(-0.75,1) + 
-  xlab("") + ylab("Correlation Coefficient\nInjury Samples") +labs(color = "Protein") + scale_x_discrete(breaks=seq(1:length(StandardisationLabel)),labels=StandardisationLabel) + scale_colour_manual(values = c("blue","seagreen","green","blueviolet","red","deepskyblue","hotpink","darkgoldenrod4","orange"))  + theme_bw() + 
+  xlab("") + ylab("Correlation Coefficient\n(Injury Samples)") +labs(color = "Protein") + scale_x_discrete(breaks=seq(1:length(StandardisationLabel)),labels=StandardisationLabel) + scale_colour_manual(values = c("blue","seagreen","green","blueviolet","red","deepskyblue","hotpink","darkgoldenrod4","orange"))  + theme_bw() + 
   theme(axis.text.x = element_text(size=10, angle=30,face="bold",hjust=1),axis.text.y = element_text(size=10,face="bold"),
         legend.title =element_text(size = 9,face="bold"), legend.text = element_text(size = 9,face="bold"),
         axis.title.y =element_text(size=10,face="bold"),axis.title.x =element_text(size=10))
@@ -87,14 +87,14 @@ cowplot::plot_grid(p1, p2,nrow=2,ncol=1,align = "v")
 ##########################################################################################################################################################
 p.variation.PC.before <- ggplot() + geom_bar(aes(x=1:10,y=eig.val.standardised.all[1:10]),stat="identity",fill="steelblue") + scale_x_discrete(limits=paste0("PC",1:10)) +
   xlab("") + ylab("Variation Explained (%)") + 
-  geom_text(aes(x=1:10,y=eig.val.standardised.all[1:10]+0.9,label=paste0(signif(eig.val.standardised.all[1:10],2),"%")),size=3,fontface = "bold") + theme_bw() + 
-  theme(axis.text.x = element_text(size=7,face="bold"),axis.text.y =element_text(size=10,face="bold"),axis.title.y =element_text(size=12.5,face="bold",vjust=-1),
+  geom_text(aes(x=1:10,y=eig.val.standardised.all[1:10]+1.5,label=paste0(signif(eig.val.standardised.all[1:10],2),"%")),size=3,fontface = "bold") + theme_bw() + 
+  theme(axis.text.x = element_text(size=8,face="bold"),axis.text.y =element_text(size=10,face="bold"),axis.title.y =element_text(size=12.5,face="bold",vjust=-1),
         panel.grid.major.x = element_blank()) 
 
 p.variation.PC.after  <- ggplot() + geom_bar(aes(x=1:10,y=eig.val.batchDone2[1:10]),stat="identity",fill="steelblue") + scale_x_discrete(limits=paste0("PC",1:10)) +
   xlab("") + ylab("Variation Explained (%)\nafter IPS Adjustment") + theme_bw() + 
-  geom_text(aes(x=1:10,y=eig.val.batchDone2[1:10]+0.25,label=paste0(signif(eig.val.batchDone2[1:10],2),"%")),size=3,fontface = "bold") + theme_bw() + 
-  theme(axis.text.x = element_text(size=7,face="bold"),axis.text.y =element_text(size=10,face="bold"),axis.title.y =element_text(size=12.5,face="bold",vjust=-1),
+  geom_text(aes(x=1:10,y=eig.val.batchDone2[1:10]+0.5,label=paste0(signif(eig.val.batchDone2[1:10],2),"%")),size=3,fontface = "bold") + theme_bw() + 
+  theme(axis.text.x = element_text(size=8,face="bold"),axis.text.y =element_text(size=10,face="bold"),axis.title.y =element_text(size=12.5,face="bold",vjust=-1),
         panel.grid.major.x = element_blank()) 
 
 ##########################################################################################################################################################
@@ -103,9 +103,9 @@ p.variation.PC.after  <- ggplot() + geom_bar(aes(x=1:10,y=eig.val.batchDone2[1:1
 abundance.PC1 <- data.frame("abunadance"=log(corPerPro.BatchCorrected[[2]]),"correlation"=corPerPro.BatchCorrected[[1]])
 albminSeq <- rownames(ProMeta)[which(ProMeta$EntrezGeneSymbol=="ALB")]
 LDHsea <- rownames(ProMeta)[which(ProMeta$EntrezGeneSymbol=="LDHB")]
-p.abundance.PC1 <- ggplot(abundance.PC1,aes(x=abunadance,y=correlation)) + geom_point(color="royalblue4",size=0.5) + geom_smooth(method='lm',color="black") +
+p.abundance.PC1 <- ggplot(data=abundance.PC1[is.finite(abundance.PC1$abunadance),],aes(x=abunadance,y=correlation)) + geom_point(color="royalblue4",size=0.5) + geom_smooth(method='lm',color="black") +
   geom_point(aes(x=abundance.PC1[albminSeq,"abunadance"],y=abundance.PC1[albminSeq,"correlation"]),color="#009E73",shape=24,size=3) +
-  annotate(geom="text",x=abundance.PC1[albminSeq,"abunadance"]+0.1, y=abundance.PC1[albminSeq,"correlation"]-0.15, label="Albumin",color="#009E73",fontface="bold") +
+  annotate(geom="text",x=abundance.PC1[albminSeq,"abunadance"]-0.2, y=abundance.PC1[albminSeq,"correlation"]-0.15, label="Albumin",color="#009E73",fontface="bold") +
   geom_point(aes(x=abundance.PC1[LDHsea,"abunadance"],y=abundance.PC1[LDHsea,"correlation"]),color="#D55E00",shape=24,size=3) +
   annotate(geom="text",x=abundance.PC1[LDHsea,"abunadance"]+2, y=abundance.PC1[LDHsea,"correlation"], label="LDH",color="#D55E00",fontface="bold") +
   xlab("Log Mean Protein Abudance") + ylab("Correlation Coefficient with PC1") + theme_bw() + 
@@ -117,23 +117,28 @@ p.abundance.PC1 <- ggplot(abundance.PC1,aes(x=abunadance,y=correlation)) + geom_
 ##########################################################################################################################################################
 ### PC1 of 18 paired spun/unspun samples 
 ##########################################################################################################################################################
-adjustY <- rep(0,36)
-adjustY[c(8,17,1,22,36,29,19,26,32,30,25,33,28,20,31)] <- c(4,2,1,-4,-3.5,-2,-3,-1.3,-6,-2,5,7,11,7,5)
+# adjustY <- rep(0,36)
+# adjustY[c(8,17,1,22,36,29,19,26,32,30,25,33,28,20,31)] <- c(4,2,1,-4,-3.5,-2,-3,-1.3,-6,-2,5,7,11,7,5)
+# p.spin.PC1 <- ggplot(data=spinFrame,aes(x=Spin,y=as.numeric(PC1))) + geom_point(aes(color=Spin),size=2) + geom_line(aes(group=rep(1:18,2),color=rep(spin.col,2))) +
+#   geom_text(aes(x=c(rep(0.7,18),rep(2.3,18)),y=as.numeric(PC1)-adjustY,label = c(sub("-V.*$","",rownames(spinFrame)))),size=2) + xlab("") + ylab("PC1") + scale_x_discrete(limits=c("Unspun","Spun")) + theme_bw() +
+#   theme(axis.title.x = element_text(size=10,face="bold"),axis.text.x = element_text(size=10,face="bold"), axis.text.y = element_text(size=10,face="bold"),legend.position = "none",
+#         axis.title.y =element_text(size=12.5,face="bold",vjust=-1),panel.grid.major.x = element_blank()) 
+
 p.spin.PC1 <- ggplot(data=spinFrame,aes(x=Spin,y=as.numeric(PC1))) + geom_point(aes(color=Spin),size=2) + geom_line(aes(group=rep(1:18,2),color=rep(spin.col,2))) +
-  geom_text(aes(x=c(rep(0.7,18),rep(2.3,18)),y=as.numeric(PC1)-adjustY,label = c(sub("-V.*$","",rownames(spinFrame)))),size=2) + xlab("") + ylab("PC1") + scale_x_discrete(limits=c("Unspun","Spun")) + theme_bw() +
+  xlab("") + ylab("PC1") + scale_x_discrete(limits=c("Unspun","Spun")) + theme_bw() +
   theme(axis.title.x = element_text(size=10,face="bold"),axis.text.x = element_text(size=10,face="bold"), axis.text.y = element_text(size=10,face="bold"),legend.position = "none",
-        axis.title.y =element_text(size=12.5,face="bold",vjust=-1),panel.grid.major.x = element_blank()) 
+        axis.title.y =element_text(size=12.5,face="bold",vjust=-1),panel.grid.major.x = element_blank())
 
 ##########################################################################################################################################################
 ### Intracellular protein score vs PC1 on the IPS adjusted and non-adjusted data
 ##########################################################################################################################################################
 p.RegProBefore <- ggplot() + geom_point(aes(x=pcDat.batchDone[,"PC1"],y=IPScore)) + geom_smooth(aes(x=pcDat.batchDone[,"PC1"],y=IPScore),method='lm',color="red") + 
-  xlab("PC1 before IPS Adjustment") + ylab("Intracellular Protein Score") + annotate(geom="text",x=60, y=35000, label=paste0("Correlation Coefficient: ",signif(cor(pcDat.batchDone[,"PC1"],IPScore),2)),color="red",fontface = "bold",size=3) + theme_bw() + 
+  xlab("PC1 before IPS Adjustment") + ylab("Intracellular Protein Score") + annotate(geom="text",x=60, y=35000, label=paste0("Correlation Coefficient: ",signif(cor(pcDat.batchDone[,"PC1"],IPScore),2)),color="red",fontface = "bold",size=4) + theme_bw() + 
   theme(axis.text.x = element_text(size=10,face="bold"),axis.title.x =element_text(size = 10,face="bold"), 
         axis.text.y =element_text(size=10,face="bold"),axis.title.y =element_text(size=12.5,face="bold",vjust=-1)) 
 
 p.RegProAfter <- ggplot() + geom_point(aes(x=pcDat.batchDone2[,"PC1"],y=IPScore)) + geom_smooth(aes(x=pcDat.batchDone2[,"PC1"],y=IPScore),method='lm',color="red") + 
-  xlab("PC1 after IPS Adjustment") + ylab("Intracellular Protein Score") + annotate(geom="text",x=-50, y=35000, label=paste0("Correlation Coefficient: ",signif(cor(pcDat.batchDone2[,"PC1"],IPScore),2)),color="red",fontface = "bold",size=3) + theme_bw() + 
+  xlab("PC1 after IPS Adjustment") + ylab("Intracellular Protein Score") + annotate(geom="text",x=-50, y=35000, label=paste0("Correlation Coefficient: ",signif(cor(pcDat.batchDone2[,"PC1"],IPScore),2)),color="red",fontface = "bold",size=4) + theme_bw() + 
   theme(axis.text.x = element_text(size=10,face="bold"),axis.title.x =element_text(size = 10,face="bold"), 
         axis.text.y =element_text(size=10,face="bold"),axis.title.y =element_text(size=12.5,face="bold",vjust=-1)) 
 
@@ -143,41 +148,32 @@ cowplot::plot_grid(p.variation.PC.before, p.abundance.PC1,p.spin.PC1,p.RegProBef
 ##########################################################################################################################################################
 ### PC1 driver regression model
 ##########################################################################################################################################################
+### read in protein subcellular location information from Human Protein Atalas https://www.proteinatlas.org/humanproteome/subcellular 
 SubLocation <- read.csv(paste0(pathIn,"subcellular_location.tsv"),sep="\t") 
-LocationList <- diffProCombineOnline(SubLocation,"Main.location")
-SubLocationDat = LocationList[[1]]
-SubLocationType = LocationList[[2]]
-SublocationSet = LocationList[[3]]
-CytoplasmL <- read.csv(paste0(pathIn,"Cytoplasm.txt"))[,1]
-NucleusL <- read.csv(paste0(pathIn,"Nucleus.txt"))[,1]
-EndomembraneL <- read.csv(paste0(pathIn,"Endomembrane.txt"))[,1]
-secreted <- SubLocation$Gene.name[which(SubLocation$Extracellular.location=="Predicted to be secreted")]
+SubLocationDat = SubLocation[,c("Gene.name","Main.location")]
 
-# for each protein map their detailed cell location to the broad cell location types (Cytoplasm, Nucleus, Endomembrane, and Secreted) 
+CytoplasmL <- read.csv(paste0(pathIn,"Cytoplasm.txt"),header=FALSE)[,1]
+NucleusL <- read.csv(paste0(pathIn,"Nucleus.txt"),header=FALSE)[,1]
+EndomembraneL <- read.csv(paste0(pathIn,"Endomembrane.txt"),header=FALSE)[,1]
+
+# for each protein define whether it is a non-secreted nuclear protein 
 for (indexCounter in 1:nrow(SubLocationDat)){
   x = SubLocationDat$Main.location[indexCounter]
   pro = SubLocationDat$Gene.name[indexCounter]
   mainLoc = strsplit(x,";")[[1]]
-  if(any(CytoplasmL %in% mainLoc) & !(any(pro %in% secreted))){newLocation = "Cytoplasm"
+  if(any(CytoplasmL %in% mainLoc)){newLocation = "Cytoplasm"
+  }else if(any(EndomembraneL %in% mainLoc)){newLocation = "Endomembrane"
   }else if(any(NucleusL %in% mainLoc) & !(any(pro %in% secreted))){newLocation = "Nucleus"
-  }else if(any(EndomembraneL %in% mainLoc) & !(any(pro %in% secreted))){newLocation = "Endomembrane"
-  }else if(pro %in% secreted){newLocation = "secreted"
   }else{newLocation = NA}
   SubLocationDat$Broad.location[indexCounter]= newLocation
 }
 
-BroadLocationList <- diffProCombineOnline(SubLocationDat,"Broad.location")
-SubLocationBroad = BroadLocationList[[1]]
-SubLocationBroadType = BroadLocationList[[2]]
-SubLocationBroadSet = BroadLocationList[[3]]
+NucleusGenes <- SubLocationDat$Gene.name[which(SubLocationDat$Broad.location=="Nucleus")]
 
 keepseq <- rownames(ProMeta)[which(ProMeta$Organism=="Human" & ProMeta$Type=="Protein")]
-Nucleus <- sapply(keepseq,function(x) {ifelse(any(ProMeta[x,"EntrezGeneSymbol"] %in% SubLocationBroadSet$Nucleus),1,0)})
-Cytoplasm <- sapply(keepseq,function(x) {ifelse(any(ProMeta[x,"EntrezGeneSymbol"] %in% SubLocationBroadSet$Cytoplasm),1,0)})
-Endomembrane <- sapply(keepseq,function(x) {ifelse(any(ProMeta[x,"EntrezGeneSymbol"] %in% SubLocationBroadSet$Endomembrane),1,0)})
-secretom <- sapply(keepseq,function(x) {ifelse(any(ProMeta[x,"EntrezGeneSymbol"] %in% SubLocationBroadSet$secreted),1,0)})
+Nucleus <- sapply(keepseq,function(x) {ifelse(any(ProMeta[x,"EntrezGeneSymbol"] %in% NucleusGenes),1,0)})
 
-# for each protein check whether it is a marker for monocyte, neutrophil, macrophage
+# for each protein define whether it is a marker for monocyte, neutrophil, macrophage
 Tissue.Cell.Raw <- read.table(paste0(pathIn,"PanglaoDB_markers_27_Mar_2020.tsv"),h=T,sep="\t",quote="")
 Tissue.Cell.Raw <- Tissue.Cell.Raw[grep("Hs",Tissue.Cell.Raw$species),] # keep only human information
 TissueList <- na.omit(unique(Tissue.Cell.Raw$organ)) # extract all the tissue names
@@ -196,17 +192,15 @@ MonoCyte <- sapply(keepseq,function(x) {ifelse(any(ProMeta[x,"EntrezGeneSymbol"]
 Neutrophil <- sapply(keepseq,function(x) {ifelse(any(ProMeta[x,"EntrezGeneSymbol"] %in% Tissue.Cell.GeneSets1$`Immune system`$Neutrophils),1,0)})
 Macrophage <- sapply(keepseq,function(x) {ifelse(any(ProMeta[x,"EntrezGeneSymbol"] %in% Tissue.Cell.GeneSets1$`Immune system`$Macrophages),1,0)})
 
-# regression model with broad subcellular location as predictors, correlation coefficient between protein and PC1 as response variable, both on batch corrected/non-IPS adjusted and batch corrected/IPS-adjusted data
+# regression model with protein abundance, nuclear protein, cell markders as predictors, correlation coefficient between protein and PC1 as response variable, both on batch corrected/non-IPS adjusted and batch corrected/IPS-adjusted data
 summary(lm(corPerPro.BatchCorrected[[1]][keepseq] ~ log(corPerPro.BatchCorrected[[2]][keepseq])))
 summary(lm(corPerPro.BatchCorrected[[1]][keepseq] ~ as.factor(Nucleus) + log(corPerPro.BatchCorrected[[2]][keepseq])))
-summary(lm(corPerPro.BatchCorrected[[1]][keepseq] ~ as.factor(secretom) + log(corPerPro.BatchCorrected[[2]][keepseq])))
 summary(lm(corPerPro.BatchCorrected[[1]][keepseq] ~ as.factor(MonoCyte) + log(corPerPro.BatchCorrected[[2]][keepseq])))
 summary(lm(corPerPro.BatchCorrected[[1]][keepseq] ~ as.factor(Neutrophil) + log(corPerPro.BatchCorrected[[2]][keepseq])))
 summary(lm(corPerPro.BatchCorrected[[1]][keepseq] ~ as.factor(Macrophage) + log(corPerPro.BatchCorrected[[2]][keepseq])))
 
 summary(lm(corPerPro.reg[[1]][keepseq] ~ log(corPerPro.reg[[2]][keepseq])))
 summary(lm(corPerPro.reg[[1]][keepseq] ~ as.factor(Nucleus) + log(corPerPro.reg[[2]][keepseq])))
-summary(lm(corPerPro.reg[[1]][keepseq] ~ as.factor(secretom) + log(corPerPro.reg[[2]][keepseq])))
 summary(lm(corPerPro.reg[[1]][keepseq] ~ as.factor(MonoCyte) + log(corPerPro.reg[[2]][keepseq])))
 summary(lm(corPerPro.reg[[1]][keepseq] ~ as.factor(Neutrophil) + log(corPerPro.reg[[2]][keepseq])))
 summary(lm(corPerPro.reg[[1]][keepseq] ~ as.factor(Macrophage) + log(corPerPro.reg[[2]][keepseq])))
@@ -339,10 +333,10 @@ sapply(Test1[-6],function(x) {cor.test(as.numeric(sandwich_master_Historic[,x]),
 ###_______________________________________________________________________________________________________________________________________________________
 ###_______________________________________________________________________________________________________________________________________________________
 ### plot Figure6 and FigureS6 in QC paper
-plotTechPC(CombinedFrame,pcDat.batchDone)  ### batch corrected, non-IPS adjusted, non-filtered
-plotTechPC(CombinedFrame,pcDat.batchDone2) ### batch corrected, IPS adjusted, non-filtered
-plotTechPC(CombinedFrame,pcDat.batchCorrected.Filtered) ### batch corrected, non-IPS adjusted, filtered
-plotTechPC(CombinedFrame,pcDat.IPSreg.Filtered) ### batch corrected, IPS adjusted, filtered
+plotTechPC(CombinedFrame,pcDat.batchDone,"C")  ### batch corrected, non-IPS adjusted, non-filtered
+plotTechPC(CombinedFrame,pcDat.batchDone2,"A") ### batch corrected, IPS adjusted, non-filtered
+plotTechPC(CombinedFrame,pcDat.batchCorrected.Filtered,"B") ### batch corrected, non-IPS adjusted, filtered
+plotTechPC(CombinedFrame,pcDat.IPSreg.Filtered,"") ### batch corrected, IPS adjusted, filtered
 
 ###_______________________________________________________________________________________________________________________________________________________
 ###_______________________________________________________________________________________________________________________________________________________
@@ -631,7 +625,7 @@ p.PCA.BimodalBefore <- ggpairs(data.frame(pcDat.standardised[,1:5]), columns=1:5
                                diag=list(continuous=wrap("densityDiag",alpha=0.4)),
                                lower=list(continuous = wrap("points",alpha=0.9,size=0.5)),
                                upper = list(continuous = "blank"),
-                               legend = c(3,1)) + labs(color="before Batch Correction") + theme_bw() +
+                               legend = c(3,1)) + labs(color="Before Batch Correction") + theme_bw() +
   theme(axis.title.x = element_text(size=11,face="bold"),axis.text.x = element_text(size=10,face="bold"),
         axis.title.y =element_text(size=11,face="bold"), axis.text.y = element_text(size=10,face="bold"),
         legend.title =element_text(size = 11,face="bold"), legend.text = element_text(size = 10,face="bold"))
@@ -642,7 +636,7 @@ p.PCA.BimodalAfter <- ggpairs(data.frame(pcDat.batchDone[,1:5]), columns=1:5, ae
                               diag=list(continuous=wrap("densityDiag",alpha=0.4)),
                               lower=list(continuous = wrap("points",alpha=0.9,size=0.5)),
                               upper = list(continuous = "blank"),
-                              legend= c(3,1)) + labs(color="after Batch Correction") + theme_bw() + 
+                              legend= c(3,1)) + labs(color="After Batch Correction") + theme_bw() + 
   theme(axis.title.x = element_text(size=11,face="bold"),axis.text.x = element_text(size=10,face="bold"),
         axis.title.y =element_text(size=11,face="bold"), axis.text.y = element_text(size=10,face="bold"),
         legend.title =element_text(size = 11,face="bold"), legend.text = element_text(size = 10,face="bold"))
