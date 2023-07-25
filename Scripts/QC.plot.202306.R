@@ -149,12 +149,14 @@ cowplot::plot_grid(p.variation.PC.before, p.abundance.PC1,p.spin.PC1,p.RegProBef
 ### PC1 driver regression model
 ##########################################################################################################################################################
 ### read in protein subcellular location information from Human Protein Atalas https://www.proteinatlas.org/humanproteome/subcellular 
+### take into consideration of multiple locations, we only define proteins for "non-secreted nucleus proteins".
 SubLocation <- read.csv(paste0(pathIn,"subcellular_location.tsv"),sep="\t") 
 SubLocationDat = SubLocation[,c("Gene.name","Main.location")]
 
 CytoplasmL <- read.csv(paste0(pathIn,"Cytoplasm.txt"),header=FALSE)[,1]
 NucleusL <- read.csv(paste0(pathIn,"Nucleus.txt"),header=FALSE)[,1]
 EndomembraneL <- read.csv(paste0(pathIn,"Endomembrane.txt"),header=FALSE)[,1]
+secreted <- SubLocation$Gene.name[which(SubLocation$Extracellular.location=="Predicted to be secreted")]
 
 # for each protein define whether it is a non-secreted nuclear protein 
 for (indexCounter in 1:nrow(SubLocationDat)){
