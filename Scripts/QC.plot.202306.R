@@ -174,6 +174,7 @@ NucleusGenes <- SubLocationDat$Gene.name[which(SubLocationDat$Broad.location=="N
 
 keepseq <- rownames(ProMeta)[which(ProMeta$Organism=="Human" & ProMeta$Type=="Protein")]
 Nucleus <- sapply(keepseq,function(x) {ifelse(any(ProMeta[x,"EntrezGeneSymbol"] %in% NucleusGenes),1,0)})
+secreted.seq <- sapply(keepseq,function(x) {ifelse(any(ProMeta[x,"EntrezGeneSymbol"] %in% secreted),1,0)})
 
 # for each protein define whether it is a marker for monocyte, neutrophil, macrophage
 Tissue.Cell.Raw <- read.table(paste0(pathIn,"PanglaoDB_markers_27_Mar_2020.tsv"),h=T,sep="\t",quote="")
@@ -197,12 +198,14 @@ Macrophage <- sapply(keepseq,function(x) {ifelse(any(ProMeta[x,"EntrezGeneSymbol
 # regression model with protein abundance, nuclear protein, cell markders as predictors, correlation coefficient between protein and PC1 as response variable, both on batch corrected/non-IPS adjusted and batch corrected/IPS-adjusted data
 summary(lm(corPerPro.BatchCorrected[[1]][keepseq] ~ log(corPerPro.BatchCorrected[[2]][keepseq])))
 summary(lm(corPerPro.BatchCorrected[[1]][keepseq] ~ as.factor(Nucleus) + log(corPerPro.BatchCorrected[[2]][keepseq])))
+summary(lm(corPerPro.BatchCorrected[[1]][keepseq] ~ as.factor(secreted.seq) + log(corPerPro.BatchCorrected[[2]][keepseq])))
 summary(lm(corPerPro.BatchCorrected[[1]][keepseq] ~ as.factor(MonoCyte) + log(corPerPro.BatchCorrected[[2]][keepseq])))
 summary(lm(corPerPro.BatchCorrected[[1]][keepseq] ~ as.factor(Neutrophil) + log(corPerPro.BatchCorrected[[2]][keepseq])))
 summary(lm(corPerPro.BatchCorrected[[1]][keepseq] ~ as.factor(Macrophage) + log(corPerPro.BatchCorrected[[2]][keepseq])))
 
 summary(lm(corPerPro.reg[[1]][keepseq] ~ log(corPerPro.reg[[2]][keepseq])))
 summary(lm(corPerPro.reg[[1]][keepseq] ~ as.factor(Nucleus) + log(corPerPro.reg[[2]][keepseq])))
+summary(lm(corPerPro.reg[[1]][keepseq] ~ as.factor(secreted.seq) + log(corPerPro.reg[[2]][keepseq])))
 summary(lm(corPerPro.reg[[1]][keepseq] ~ as.factor(MonoCyte) + log(corPerPro.reg[[2]][keepseq])))
 summary(lm(corPerPro.reg[[1]][keepseq] ~ as.factor(Neutrophil) + log(corPerPro.reg[[2]][keepseq])))
 summary(lm(corPerPro.reg[[1]][keepseq] ~ as.factor(Macrophage) + log(corPerPro.reg[[2]][keepseq])))
