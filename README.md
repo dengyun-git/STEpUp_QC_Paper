@@ -1,8 +1,6 @@
 ---
 <img src="STEPUPlogo.png" width="30%" />
 
-Date: Friday 30th June 2023
-
 Project: STEpUP OA
 
 Author: Dr Yun Deng     | Email:  yun.deng @ kennedy.ox.ac.uk\
