@@ -16,8 +16,7 @@ This repository comprises scripts and lists data resources required to process S
 ### Repository structure
 
 
-```
-##                                                               levelName
+```                                                            
 ## 1 STEpUP_QC_Paper-main                                                 
 ## 2  ¦--Scripts                                                          
 ## 3  ¦   °--4 R scripts used to prepare and generate figures plots tables
@@ -45,7 +44,7 @@ These scripts are stored in the Github folder called 'Scripts'.
    8) SS-228545_v4.1.20220224.adat 
    9) SS-228545_v4.1.hybNorm.medNormInt.plateScale.calibrate.anmlQC.qcCheck.20220224.adat 
    10) subcellular_location.tsv (online resources downloaded from: https://www.proteinatlas.org/humanproteome/subcellular)
-   11) PanglaoDB_markers_27_Mar_2020.tsv (online resources downloaded from: https://panglaodb.se)\
+   11) PanglaoDB_markers_27_Mar_2020.tsv (online resources downloaded from: https://panglaodb.se)
 
 Note: among the files listed above, file 1, 2, 3, 8 and 9 have confidential patient data and can not be made openly available. Please contact correspondence author of this paper to discuss the accessbility of these data. 
    
