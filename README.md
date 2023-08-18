@@ -48,6 +48,7 @@ These scripts are stored in the Github folder called 'Scripts'.
    9) SS-228545_v4.1.hybNorm.medNormInt.plateScale.calibrate.anmlQC.qcCheck.20220224.adat 
    10) subcellular_location.tsv (online resources downloaded from: https://www.proteinatlas.org/humanproteome/subcellular)
    11) PanglaoDB_markers_27_Mar_2020.tsv (online resources downloaded from: https://panglaodb.se)\
+
 Note: among the files listed above, file 1, 2, 3, 8 and 9 have confidential patient data and can not be made openly available. Please contact correspondence author of this paper to discuss the accessbility of these data. 
    
 ### General notes and comments for use
