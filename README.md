@@ -46,7 +46,7 @@ These scripts are stored in the Github folder called 'Scripts'.
    10) subcellular_location.tsv (online resources downloaded from: https://www.proteinatlas.org/humanproteome/subcellular)
    11) PanglaoDB_markers_27_Mar_2020.tsv (online resources downloaded from: https://panglaodb.se)
 
-Note: among the files listed above, file 1, 2, 3, 8 and 9 have confidential patient data and can not be made openly available. Please contact correspondence author of this paper to discuss the accessbility of these data. 
+Note: among the files listed above, file 1, 2, 3, 4, 8 and 9 have confidential patient data and can not be made openly available. Please contact correspondence author of this paper to discuss the accessbility of these data. 
    
 ### General notes and comments for use
 * Once the user has downloaded the 'Scripts' folder and prepared all the required files (as described above) under the 'Resource File' folder on their local machine, the following user input is required:
