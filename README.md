@@ -36,7 +36,7 @@ This repository comprises scripts and lists data resources required to process S
    4) QCassess.Paper.202306.R --> functions used to perform quality evaluation, and to generate plots and tables. This function is called by QC.paper.202306.R.\
 These scripts are stored in the Github folder called 'Scripts'.
 
-* This repository also includes x4 .xlsx/csv files, 3x .txt files and 4x .tsv/.adat files which are required by the scripts: 
+* To run scripts stored in this repository,  x4 .xlsx/csv files, 3x .txt files and 4x .tsv/.adat files are required to store in the folder of 'Resource File': 
    1) adat_to_redcap_SIN_map.csv 
    2) discovery_QApheno_1_120522.csv 
    3) discovery_QApheno_2_270522.xlsx 
@@ -48,20 +48,19 @@ These scripts are stored in the Github folder called 'Scripts'.
    9) SS-228545_v4.1.hybNorm.medNormInt.plateScale.calibrate.anmlQC.qcCheck.20220224.adat 
    10) subcellular_location.tsv (online resources downloaded from: https://www.proteinatlas.org/humanproteome/subcellular)
    11) PanglaoDB_markers_27_Mar_2020.tsv (online resources downloaded from: https://panglaodb.se) \
-To successfully run all the R scripts stored in this repository, these files need to be stored in the folder of 'Resource File'. 
 Note: among the files listed above, file 1, 2, 3, 8 and 9 have confidential patient data and can not be made openly available. Please contact correspondence author of this paper to discuss the accessbility of these data. 
    
 ### General notes and comments for use
-* Once the user has downloaded the 'Resource File' folder and the 'Scripts' folder from GitHub to their 'Downloads' folder on their local machine, the following user input is required:
+* Once the user has downloaded the 'Scripts' folder and prepared all the required files (as described above) under the 'Resource File' folder on their local machine, the following user input is required:
   1) Script: 'QC.paper.202306.R'
-   --> on line 15 of the code, the user will need to change the path name: userPath <-       "/Users/ydeng/Documents/QCpaper.Code/" ---> CHANGE TO user local path <--- e.g. "C:/Users/tperry/Downloads/"
+   --> on line 15 of the code, the user will need to change the path name: userPath <- "/Users/ydeng/Documents/QCpaper.Code/" ---> CHANGE TO user local path <--- e.g. "C:/Users/tperry/Downloads/"
 
   2) Script: 'QC.plot.202306.R'
    --> on line 14 of the code, the user will need to change the path name: userPath <- "/Users/ydeng/Documents/QCpaper.Code/" --->CHANGE TO user local path <--- e.g. "C:/Users/tperry/Downloads/"
    --> the user will then need to save this script
 
 * The following scripts need to be altered/run in the following order:
-   Order: 1) QC.paper.202306.R first & 2) QC.plot.202306.R
+   Order: 1) QC.paper.202306.R first then 2) QC.plot.202306.R
 * The script called 'QC.paper.202306' will generate a new folder called 'Robj.Paper' in the users personal Downloads folder (if the user is working out of this folder location) and will store R objects for plots and tables.  
 
 ### Other
