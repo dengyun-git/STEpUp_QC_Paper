@@ -2,10 +2,6 @@
 
 Project: STEpUP OA
 
-Author: Dr Yun Deng     | Email:  yun.deng @ kennedy.ox.ac.uk\
-Author: Dr.Luke jostins | Email:  luke.jostins @ kennedy.ox.ac.uk\
-Author: Dr.Thomas Perry | Email:  thomas.perry @ ndorms.ox.ac.uk
-
 Summary: this repository holds scripts & data required to generate figures/plots/tables for our 'QC Manuscript'
 
 ### STEpUp_QC_Paper repository - overview
