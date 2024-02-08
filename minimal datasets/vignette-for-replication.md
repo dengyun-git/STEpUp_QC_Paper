@@ -1,15 +1,5 @@
 ---
 title: "STEpUP OA: Script used to process 'minimal' dataset required to generate figures in our Quality-Control (QC) Manuscript"
-output:
-  html_document:
-    keep_md: yes
-    toc: yes
-    toc_depth: 3
-    fig_width: 12
-    fig_height: 7
-  pdf_document:
-    toc: yes
-    toc_depth: '3'
 ---
 
 
