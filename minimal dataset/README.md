@@ -12,14 +12,14 @@ The full STEpUP OA dataset may be made available by application to the Data Acce
 
 ```
 ##                                      levelName
-## 1 minimal dataset                            
-## 2  ¦--PC1 Driver - Standardisation            
-## 3  ¦--PC1 Driver - Intracellular Protein Score
-## 4  ¦--PC2 Driver - Bimodal Signal             
-## 5  ¦--Compare to Immunoassay                  
-## 6  ¦--Disease Group After Filtering           
-## 7  ¦--vignette for replication.Rmd            
-## 8  °--vignette-for-replication.html
+##  minimal dataset                            
+##   ¦--PC1 Driver - Standardisation            
+##   ¦--PC1 Driver - Intracellular Protein Score
+##   ¦--PC2 Driver - Bimodal Signal             
+##   ¦--Compare to Immunoassay                  
+##   ¦--Disease Group After Filtering           
+##   ¦--vignette for replication.Rmd            
+##   °--vignette-for-replication.html
 ```
 
 ## The minimal dataset to replicate figures in the paper
