@@ -1,16 +1,16 @@
 ---
-Directory: Script used to process 'minimal' dataset required to generate figures in our Quality-Control (QC) Manuscript"
+Minimal dataset: 'minimal' dataset required to generate figures in our Quality-Control (QC) Manuscript"
 ---
 
 ## Purpose of this directory:
 
-The full STEpUP OA dataset may be made available by application to the Data Access and Publication Group of STEpUP OA (stepupoa@kennedy.ox.ac.uk) once the primary analysis manuscript is published, in accordance with what is stipulated in our Consortium Agreement. The minimal datasets necessary for replicating figures along with the required R code are provided here. 
+The full STEpUP OA dataset may be made available by application to the Data Access and Publication Group of STEpUP OA (stepupoa@kennedy.ox.ac.uk) once the primary analysis manuscript is published, in accordance with what is stipulated in our Consortium Agreement. The minimal dataset necessary for replicating figures along with the required R code are provided here. 
 
 ## Directory structure
 
 ```
 ##                                      levelName
-## 1 minimal datasets                            
+## 1 minimal dataset                            
 ## 2  ¦--PC1 Driver - Standardisation            
 ## 3  ¦--PC1 Driver - Intracellular Protein Score
 ## 4  ¦--PC2 Driver - Bimodal Signal             
