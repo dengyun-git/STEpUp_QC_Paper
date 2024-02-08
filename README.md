@@ -34,7 +34,6 @@ This repository comprises scripts and data required to process SomaLogic proteom
    2) QC.plot.202306.R ---------> script used to make plots and tables as shown in our 'QC manuscript'. 
    3) QCnorm.Paper.202306.R ----> functions used to perform each of our standardization steps. This function is called by QC.paper.202306.R 
    4) QCassess.Paper.202306.R --> functions used to perform quality evaluation, and to generate plots and tables. This function is called by QC.paper.202306.R.\
-These scripts are stored in the Github folder called 'Scripts'.
 
 * Full dataset required by R code in "Scripts" folder includes x4 .xlsx/csv files, 3x .txt files and 4x .tsv/.adat files which are required by the scripts: 
    1) adat_to_redcap_SIN_map.csv 
