@@ -8,8 +8,6 @@ Author: Dr Yun Deng     | Email:  yun.deng @ kennedy.ox.ac.uk\
 Author: Dr.Luke jostins | Email:  luke.jostins @ kennedy.ox.ac.uk\
 Author: Dr.Thomas Perry | Email:  thomas.perry @ ndorms.ox.ac.uk
 
-Github repository access: https://github.com/dengyun-git/STEpUp_QC_Paper (administrator: Y.Deng)
-
 Summary: this repository holds scripts & data required to generate figures/plots/tables for our 'QC Manuscript'
 
 ### STEpUp_QC_Paper repository - overview
