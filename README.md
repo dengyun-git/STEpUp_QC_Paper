@@ -1,4 +1,3 @@
-
 <img src="STEPUPlogo.png" width="30%" />
 
 Project: STEpUP OA
@@ -18,14 +17,14 @@ This repository comprises scripts and data required to process SomaLogic proteom
 
 ```
 ##                                                               levelName
-##  STEpUP_QC_Paper-main                                                 
-##   ¦--Scripts                                                          
-##   ¦   °--4 R scripts used to prepare and generate figures plots tables
-##   ¦--Resource File                                                    
-##   ¦   °--11 files used by the various R scripts                       
-##   ¦--Robj.Paper                                                       
-##   °--minimal dataset                                                  
-##       °--minimal data and code to replicate figures in the paper
+## 1 STEpUP_QC_Paper-main                                                 
+## 2  ¦--Scripts                                                          
+## 3  ¦   °--4 R scripts used to prepare and generate figures plots tables
+## 4  ¦--Resource File                                                    
+## 5  ¦   °--11 files used by the various R scripts                       
+## 6  ¦--Robj.Paper                                                       
+## 7  °--minimal dataset                                                  
+## 8      °--minimal data and code to replicate figures in the paper
 ```
 
 ### Repository scripts and data (as stored in the GitHub folder)
@@ -48,9 +47,9 @@ This repository comprises scripts and data required to process SomaLogic proteom
    10) subcellular_location.tsv (online resources downloaded from: https://www.proteinatlas.org/humanproteome/subcellular)
    11) PanglaoDB_markers_27_Mar_2020.tsv (online resources downloaded from: https://panglaodb.se) \
 
-Currently only four files without privacy information about patients are stored in "Resource File". The full STEpUP OA dataset may be made available by application to the Data Access and Publication Group of STEpUP OA (stepupoa@kennedy.ox.ac.uk). 
+Currently, only four files devoid of any privacy information regarding patients are stored in the 'Resource File' folder. The full STEpUP OA dataset can be made available by application to the Data Access and Publication Group of STEpUP OA (stepupoa@kennedy.ox.ac.uk). 
 
-* For the purpose of users to replicate results in the paper without further enquiry of the full dataset, we prepared the folder "minimal dataset" which contains the 'minimal data' and R code to generate figures in our Quality-Control (QC) Manuscript.
+* To facilitate users in replicating the results presented in the paper without the need for additional inquiries regarding the complete dataset, we have compiled the 'minimal dataset' folder. This folder contains the essential data along with R code necessary for generating the figures outlined in our Quality-Control (QC) Manuscript.
    
 ### General notes and comments for use
 * Once the user has downloaded the 'Resource File' folder and the 'Scripts' folder from GitHub to their 'Downloads' folder on their local machine, the following user input is required:
