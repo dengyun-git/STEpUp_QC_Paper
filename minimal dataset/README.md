@@ -1,5 +1,5 @@
 ---
-<big> minimal dataset: Script used to process 'minimal' dataset required to generate figures in our Quality-Control (QC) Manuscript </big>/
+<big> minimal dataset: Script used to process 'minimal' dataset required to generate figures in our Quality-Control (QC) Manuscript </big>
 ---
 
 
