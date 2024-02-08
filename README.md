@@ -20,14 +20,14 @@ This repository comprises scripts and data required to process SomaLogic proteom
 
 ```
 ##                                                               levelName
-## 1 STEpUP_QC_Paper-main                                                 
-## 2  ¦--Scripts                                                          
-## 3  ¦   °--4 R scripts used to prepare and generate figures plots tables
-## 4  ¦--Resource File                                                    
-## 5  ¦   °--11 files used by the various R scripts                       
-## 6  ¦--Robj.Paper                                                       
-## 7  °--minimal dataset                                                  
-## 8      °--minimal data and code to replicate figures in the paper
+##  STEpUP_QC_Paper-main                                                 
+##   ¦--Scripts                                                          
+##   ¦   °--4 R scripts used to prepare and generate figures plots tables
+##   ¦--Resource File                                                    
+##   ¦   °--11 files used by the various R scripts                       
+##   ¦--Robj.Paper                                                       
+##   °--minimal dataset                                                  
+##       °--minimal data and code to replicate figures in the paper
 ```
 
 ### Repository scripts and data (as stored in the GitHub folder)
