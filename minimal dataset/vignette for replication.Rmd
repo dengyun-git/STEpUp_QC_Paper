@@ -1,15 +1,15 @@
 ---
 title: "STEpUP OA: Script used to process 'minimal' dataset required to generate figures in our Quality-Control (QC) Manuscript"
 output:
-  pdf_document:
-    toc: yes
-    toc_depth: '3'
   html_document:
     keep_md: yes
     toc: yes
     toc_depth: 3
-    fig_width: 8
+    fig_width: 12
     fig_height: 7
+  pdf_document:
+    toc: yes
+    toc_depth: '3'
 ---
 
 ```{r setup, include=FALSE}
@@ -25,11 +25,11 @@ The full STEpUP OA dataset may be made available by application to the Data Acce
 library(data.tree)
 library(plyr)
 path <- c(
-  "minimal datasets/PC1 Driver - Standardisation",
-  "minimal datasets/PC1 Driver - Intracellular Protein Score",
-  "minimal datasets/PC2 Driver - Bimodal Signal",
-  "minimal datasets/Compare to Immunoassay",
-  "minimal datasets/Disease Group After Filtering")
+  "minimal dataset/PC1 Driver - Standardisation",
+  "minimal dataset/PC1 Driver - Intracellular Protein Score",
+  "minimal dataset/PC2 Driver - Bimodal Signal",
+  "minimal dataset/Compare to Immunoassay",
+  "minimal dataset/Disease Group After Filtering")
 x <- lapply(strsplit(path, "/"), function(z) as.data.frame(t(z)))
 x <- rbind.fill(x)
 x$pathString <- apply(x, 1, function(x) paste(trimws(na.omit(x)), collapse="/"))
@@ -49,7 +49,7 @@ library(ggforce)
 library(scales)
 
 ### Set the file path to where the minimal data are downloaded on your personal machine
-intermidiate.out <- "/Users/ydeng/Documents/QCpaper.Code/minimal datasets/"
+intermidiate.out <- "/Users/ydeng/Documents/QCpaper.Code/minimal dataset/"
 ```
 
 ## Assessment of Synovial Fluid Standardisation Procedures:
