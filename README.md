@@ -1,3 +1,4 @@
+
 <img src="STEPUPlogo.png" width="30%" />
 
 Date: Friday 30th June 2023
@@ -25,10 +26,11 @@ This repository comprises scripts and data required to process SomaLogic proteom
 ## 4  ¦--Resource File                                                    
 ## 5  ¦   °--11 files used by the various R scripts                       
 ## 6  ¦--Robj.Paper                                                       
-## 7  °--minimal datasets
+## 7  °--minimal dataset                                                  
+## 8      °--minimal data and code to replicate figures in the paper
 ```
 
-### Repository scripts and data (as stored in the GitHub folder: )
+### Repository scripts and data (as stored in the GitHub folder)
 * "Scripts" folder includes x4 R-scripts which processed the proteomic data and clinical data are described below;
   1) QC.paper.202306.R --------> main script used to transform Somalogic synovial fluid (SF) proteomic data and to perform a series of data quality assessments (i.e. our 'QC pipeline').
    2) QC.plot.202306.R ---------> script used to make plots and tables as shown in our 'QC manuscript'. 
@@ -48,9 +50,10 @@ These scripts are stored in the Github folder called 'Scripts'.
    9) SS-228545_v4.1.hybNorm.medNormInt.plateScale.calibrate.anmlQC.qcCheck.20220224.adat 
    10) subcellular_location.tsv (online resources downloaded from: https://www.proteinatlas.org/humanproteome/subcellular)
    11) PanglaoDB_markers_27_Mar_2020.tsv (online resources downloaded from: https://panglaodb.se) \
+
 Currently only four files without privacy information about patients are stored in "Resource File". The full STEpUP OA dataset may be made available by application to the Data Access and Publication Group of STEpUP OA (stepupoa@kennedy.ox.ac.uk). 
 
-However for the purpose of users to replicate results in the paper, we prepared the folder "minimal datasets", which contains the 'minimal' dataset and R code to generate figures in our Quality-Control (QC) Manuscript.
+* For the purpose of users to replicate results in the paper without further enquiry of the full dataset, we prepared the folder "minimal dataset" which contains the 'minimal data' and R code to generate figures in our Quality-Control (QC) Manuscript.
    
 ### General notes and comments for use
 * Once the user has downloaded the 'Resource File' folder and the 'Scripts' folder from GitHub to their 'Downloads' folder on their local machine, the following user input is required:
@@ -66,7 +69,7 @@ However for the purpose of users to replicate results in the paper, we prepared 
    
 * The script called 'QC.paper.202306' will generate a new folder called 'Robj.Paper' in the users personal Downloads folder (if the user is working out of this folder location) and will store R objects for plots and tables.  
 
-* To use the minimal dataset to replicate figures in the paper please refer to the detailed guide described in "vignette-for-replication.html" under the "minimal datasets" folder.
+* To use the minimal dataset to replicate figures in the paper please refer to the detailed guide outlined in "vignette-for-replication.html" located within the "minimal dataset" folder.
 
 ### Other
 * The user will need to install the R packages:
