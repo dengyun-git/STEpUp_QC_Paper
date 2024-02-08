@@ -66,13 +66,13 @@ CorDatP.INJ <- read.csv(paste0(intermidiate.out,"Standardisation/CorDatP.INJ.csv
 
 StandardisationLabel = c("Raw Data","HN","HN + PS","HN + PS + MN","HN + PS + MN + PC","HN + PS + PC") ### use these abbreviations for each normalisation step 
 
-p.meanCV <- ggplot(data = meanCV) + geom_point(aes(x=NormalisationSteps,y=100*as.numeric(meanCV),group=DiseaseGroup,col=DiseaseGroup)) + geom_line(aes(x=NormalisationSteps,y=100*as.numeric(meanCV),group=DiseaseGroup,col=DiseaseGroup)) + theme_bw() +
-  xlab("") + ylab("\n\nMean %CV") + labs(color = "Disease Group") + scale_x_discrete(breaks=seq(1:length(StandardisationLabel)),labels=StandardisationLabel) + 
+p.meanCV <- ggplot(data = meanCV) + geom_point(aes(x=as.character(NormalisationSteps),y=100*as.numeric(meanCV),group=DiseaseGroup,col=DiseaseGroup)) + geom_line(aes(x=as.character(NormalisationSteps),y=100*as.numeric(meanCV),group=DiseaseGroup,col=DiseaseGroup)) + 
+  xlab("") + ylab("\n\nMean %CV") + labs(color = "Disease Group") + scale_x_discrete(breaks=seq(1:length(StandardisationLabel)),labels=StandardisationLabel) + theme_bw() +
   theme(axis.text.x = element_text(size=10, angle=30,face="bold",hjust=1),axis.text.y = element_text(size=10,face="bold"),
         legend.title =element_text(size = 9,face="bold"), legend.text = element_text(size = 9,face="bold"),
         axis.title.y =element_text(size=10,face="bold"),axis.title.x =element_text(size=10)) 
 
-p.meanR2 <- ggplot(data = meanR2) + geom_point(aes(x=NormalisationSteps,y=100*as.numeric(meanR2),group=DiseaseGroup,col=DiseaseGroup)) + geom_line(aes(x=NormalisationSteps,y=100*as.numeric(meanR2),group=DiseaseGroup,col=DiseaseGroup)) +
+p.meanR2 <- ggplot(data = meanR2) + geom_point(aes(x=as.character(NormalisationSteps),y=100*as.numeric(meanR2),group=DiseaseGroup,col=DiseaseGroup)) + geom_line(aes(x=as.character(NormalisationSteps),y=100*as.numeric(meanR2),group=DiseaseGroup,col=DiseaseGroup)) +
   xlab("") + ylab(bquote(atop("\n","" ~ bold("Mean R") ^ bold("2")))) + labs(color = "Disease Group") + scale_x_discrete(breaks=seq(1:length(StandardisationLabel)),labels=StandardisationLabel) + theme_bw() +
   theme(axis.text.x = element_text(size=10, angle=30,face="bold",hjust=1),axis.text.y = element_text(size=10,face="bold"),
         legend.title =element_text(size = 9,face="bold"), legend.text = element_text(size = 9,face="bold"),
@@ -240,7 +240,7 @@ umap.BimodalBefore <- read.csv(paste0(intermidiate.out,"PC2 Driver - Bimodal Sig
 umap.BimodalAfter <- read.csv(paste0(intermidiate.out,"PC2 Driver - Bimodal Signal/umap.BimodalAfter.csv")) 
 
 p.umap.BimodalBefore <- ggplot(umap.BimodalBefore) + geom_point(aes(x=D1,y=D2,color=as.factor(BimodalLabel)),size=1) +
-  xlab("Dimension1") + ylab("Dimension2") + labs(color="Bimodal Signal Status") + scale_colour_manual(values = c("#D55E00","#009E73"),labels = c("Status1", "Status2")) + 
+  xlab("Dimension1") + ylab("Dimension2") + labs(color="Bimodal Signal Status") + scale_colour_manual(values = c("#009E73","#D55E00"),labels = c("Status1", "Status2")) + 
   guides(color = guide_legend(override.aes = list(size = 3))) + theme_bw() + 
   theme(axis.title.x = element_text(size=11,face="bold"),axis.text.x = element_text(size=10,face="bold"),
         axis.title.y =element_text(size=11,face="bold"), axis.text.y = element_text(size=10,face="bold"),
@@ -248,7 +248,7 @@ p.umap.BimodalBefore <- ggplot(umap.BimodalBefore) + geom_point(aes(x=D1,y=D2,co
         legend.margin=margin(0,0,0,0),legend.box.margin=margin(-4,-4,-4,-4))
 
 p.umap.BimodalAfter <- ggplot(umap.BimodalAfter) + geom_point(aes(x=D1,y=D2,color=as.factor(BimodalLabel)),size=1) +
-  xlab("Dimension1") + ylab("Dimension2") + labs(color="Bimodal Signal Status") + scale_colour_manual(values = c("#D55E00","#009E73"),labels = c("Status1", "Status2")) + 
+  xlab("Dimension1") + ylab("Dimension2") + labs(color="Bimodal Signal Status") + scale_colour_manual(values = c("#009E73","#D55E00"),labels = c("Status1", "Status2")) + 
   guides(color = guide_legend(override.aes = list(size = 3))) + theme_bw() +
   theme(axis.title.x = element_text(size=11,face="bold"),axis.text.x = element_text(size=10,face="bold"),
         axis.title.y =element_text(size=11,face="bold"), axis.text.y = element_text(size=10,face="bold"),
